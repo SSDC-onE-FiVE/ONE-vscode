@@ -131,7 +131,6 @@ export function displayCfgToEditor(cfg) {
     oneImportONNX?.["output_path"]
   );
   document.getElementById("ONNXSaveIntermediate").checked = cfgBoolean(
-    // oneImportONNX?.["hoho_ho"]
     oneImportONNX?.["save_intermediate"]
   );
   document.getElementById("ONNXUnrollRNN").checked = cfgBoolean(
