@@ -345,6 +345,9 @@ function registerEdgeTPUOptions() {
   const edgeTPUSearchDelegate = document.getElementById(
     "EdgeTPUSearchDelegate"
   );
+  const edgeTPUDelegateSearchStepDiv = document.getElementById(
+    "EdgeTPUDelegateSearchStepDiv"
+  );
 
   edgeTPUInputPath.addEventListener("input", function () {
     updateImportEdgeTPU();
@@ -362,6 +365,10 @@ function registerEdgeTPUOptions() {
     updateImportEdgeTPU();
     applyUpdates();
   });
+  edgeTPUDelegateSearchStepDiv.addEventListener("input", function(){
+    updateImportEdgeTPU();
+    applyUpdates();
+  })
 }
 
 function registerOptimizeOptions() {

@@ -31,6 +31,8 @@ export function updateImportUI() {
   const edgeTPUAdvancedOptions = document.getElementById(
     "optionImportEdgeTPUAdvanced"
   );
+  const edgeTPUDelegateSearchStep = document.getElementById("EdgeTPUDelegateSearchStepDiv");
+  const edgeTPUSearchDelegate = document.getElementById("EdgeTPUSearchDelegate");
 
   pbBasicOptions.style.display = "none";
   pbAdvancedOptions.style.display = "none";
@@ -41,6 +43,7 @@ export function updateImportUI() {
   onnxAdvancedOptions.style.display = "none";
   edgeTPUBasicOptions.style.display = "none";
   edgeTPUAdvancedOptions.style.display = "none";
+  
 
   switch (modelType.value) {
     case "pb":
@@ -61,6 +64,8 @@ export function updateImportUI() {
       onnxAdvancedOptions.style.display = "block";
       break;
     case "edgetpu":
+      if(edgeTPUSearchDelegate.checked) edgeTPUDelegateSearchStepDiv.style.display = "block";
+      else edgeTPUDelegateSearchStepDiv.style.display = "none";
       edgeTPUBasicOptions.style.display = "block";
       edgeTPUAdvancedOptions.style.display = "block";
       break;

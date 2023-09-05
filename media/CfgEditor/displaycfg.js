@@ -161,6 +161,10 @@ export function displayCfgToEditor(cfg) {
   document.getElementById("EdgeTPUSearchDelegate").checked = cfgBoolean(
     oneImportEdgeTPU?.["search_delegate"]
   );
+  document.getElementById("EdgeTPUDelegateSearchStepDiv").checked = cfgString(
+    oneImportEdgeTPU?.["delegate_search_step"],
+    "1"
+  );
 
   updateImportUI();
 

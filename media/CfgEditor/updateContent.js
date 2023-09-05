@@ -329,6 +329,10 @@ export function updateImportEdgeTPU() {
     "search_delegate",
     document.getElementById("EdgeTPUSearchDelegate").checked
   );
+  content += iniKeyValueString(
+    "delegate_search_step",
+    document.getElementById("EdgeTPUDelegateSearchStepDiv").checked
+  );
 
   postMessageToVsCode({
     type: "setSection",
