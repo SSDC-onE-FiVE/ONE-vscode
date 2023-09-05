@@ -24,15 +24,9 @@ import * as fs from "fs";
 
 class EdgeTPUDebianToolchain extends DebianToolchain {
   run(cfg: string): Command {
-
     let cmd = new Command("edgetpu_compiler");
-
-    // TODO: cfg는 cfg file path임
-    //       cfg 파일을 열어 edgetpu_compiler 명령 옵션 이어 붙이기로 Command를 만들어 반환해야함
-
     var config = ini.parse(fs.readFileSync(cfg, 'utf-8'));    
     
-    // TODO: 예외 처리 how?
     if (config["one-import-edgetpu"] === undefined) {
         return cmd;
     }
