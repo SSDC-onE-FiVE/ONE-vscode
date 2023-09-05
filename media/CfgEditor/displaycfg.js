@@ -148,6 +148,15 @@ export function displayCfgToEditor(cfg) {
 
   // TODO Support one-import-bcq
 
+  // TODO Support import EdgeTPU
+  const oneImportEdgeTPU = cfg["one-import-edgetpu"];
+  document.getElementById("EdgeTPUInputPath").value = cfgString(
+    oneImportEdgeTPU?.["input_path"]
+  );
+  document.getElementById("EdgeTPUOutputPath").value = cfgString(
+    oneImportEdgeTPU?.["output_path"]
+  );
+
   updateImportUI();
 
   const oneOptimize = cfg["one-optimize"];
