@@ -319,9 +319,9 @@ export function updateImportEdgeTPU() {
   );
   content += iniKeyValueString(
     "help",
-    document.getElementById("EdgeTPUHelp").checked,
+    document.getElementById("EdgeTPUHelp").checked
   );
-  
+
   postMessageToVsCode({
     type: "setSection",
     section: "one-import-edgetpu",

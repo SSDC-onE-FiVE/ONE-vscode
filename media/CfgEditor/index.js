@@ -343,7 +343,7 @@ function registerEdgeTPUOptions() {
     updateImportEdgeTPU();
     applyUpdates();
   });
-  edgeTPUHelp.addEventListener("click",function(){
+  edgeTPUHelp.addEventListener("click", function () {
     updateImportEdgeTPU();
     applyUpdates();
   });
