@@ -342,7 +342,7 @@ function registerEdgeTPUOptions() {
   const edgeTPUShowOperations = document.getElementById(
     "EdgeTPUShowOperations"
   );
-  
+
   edgeTPUInputPath.addEventListener("input", function () {
     updateImportEdgeTPU();
     applyUpdates();
