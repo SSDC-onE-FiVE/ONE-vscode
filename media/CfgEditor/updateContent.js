@@ -317,6 +317,11 @@ export function updateImportEdgeTPU() {
       "_edgetpu"
     )
   );
+  content += iniKeyValueString(
+    "help",
+    document.getElementById("EdgeTPUHelp").checked,
+  );
+  
   postMessageToVsCode({
     type: "setSection",
     section: "one-import-edgetpu",

@@ -150,6 +150,9 @@ export function displayCfgToEditor(cfg) {
   document.getElementById("EdgeTPUOutputPath").value = cfgString(
     oneImportEdgeTPU?.["output_path"]
   );
+  document.getElementById("EdgeTPUHelp").checked = cfgBoolean(
+    oneImportEdgeTPU?.["help"]
+  );
 
   updateImportUI();
 
