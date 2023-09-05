@@ -131,6 +131,7 @@ export function displayCfgToEditor(cfg) {
     oneImportONNX?.["output_path"]
   );
   document.getElementById("ONNXSaveIntermediate").checked = cfgBoolean(
+    // oneImportONNX?.["hoho_ho"]
     oneImportONNX?.["save_intermediate"]
   );
   document.getElementById("ONNXUnrollRNN").checked = cfgBoolean(
@@ -138,6 +139,11 @@ export function displayCfgToEditor(cfg) {
   );
   document.getElementById("ONNXUnrollLSTM").checked = cfgBoolean(
     oneImportONNX?.["unroll_lstm"]
+  );
+
+  const oneImportEDGETPU = cfg["one-import-edgetpu"];
+  document.getElementById("EdgeTPUShowOperations").checked = cfgBoolean(
+    oneImportEDGETPU?.["show_operations"]
   );
 
   // TODO Support one-import-bcq

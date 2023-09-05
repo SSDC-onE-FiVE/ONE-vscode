@@ -336,7 +336,16 @@ function registerONNXOptions() {
   });
 }
 
-function registerEdgeTPUOptions() {}
+function registerEdgeTPUOptions() {
+  const edgeTPUShowOperations = document.getElementById(
+    "EdgeTPUShowOperations"
+  );
+
+  edgeTPUShowOperations.addEventListener("click", function () {
+    updateImportEdgeTPU();
+    applyUpdates();
+  });
+}
 
 function registerOptimizeOptions() {
   const optimizeInputPath = document.getElementById("optimizeInputPath");
