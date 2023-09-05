@@ -148,6 +148,9 @@ export function displayCfgToEditor(cfg) {
   );
   document.getElementById("EdgeTPUOutputPath").value = cfgString(
     oneImportEdgeTPU?.["output_path"]
+  );  
+  document.getElementById("EdgeTPUHelp").checked = cfgBoolean(
+    oneImportEdgeTPU?.["help"]
   );
   document.getElementById("EdgeTPUShowOperations").checked = cfgBoolean(
     oneImportEdgeTPU?.["show_operations"]
@@ -156,6 +159,8 @@ export function displayCfgToEditor(cfg) {
     oneImportEdgeTPU?.["min_runtime_version"],
     "14"
   );
+
+
 
   updateImportUI();
 
