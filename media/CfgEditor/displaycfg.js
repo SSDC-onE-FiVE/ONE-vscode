@@ -141,10 +141,6 @@ export function displayCfgToEditor(cfg) {
   );
   
   // TODO Support one-import-bcq
-  const oneImportEdgeTPU = cfg["one-import-edgetpu"];
-  document.getElementById("EdgeTPUIntermediateTensorsInputArrays").value = cfgString(
-    oneImportEdgeTPU?.["intermediate_tensors"]
-  );
 
   // TODO Support import EdgeTPU
   const oneImportEdgeTPU = cfg["one-import-edgetpu"];
@@ -156,6 +152,9 @@ export function displayCfgToEditor(cfg) {
   );  
   document.getElementById("EdgeTPUHelp").checked = cfgBoolean(
     oneImportEdgeTPU?.["help"]
+  );
+  document.getElementById("EdgeTPUIntermediateTensorsInputArrays").value = cfgString(
+    oneImportEdgeTPU?.["intermediate_tensors"]
   );
   document.getElementById("EdgeTPUShowOperations").checked = cfgBoolean(
     oneImportEdgeTPU?.["show_operations"]
