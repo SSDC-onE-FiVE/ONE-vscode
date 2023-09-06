@@ -236,6 +236,9 @@ class DirectoryNode extends Node {
     super(uri, parent);
   }
 
+  private isEdgeTPUCompiled():boolean{
+    return true;
+  }
   /**
    * Build a sub-tree under the node
    *
@@ -252,7 +255,6 @@ class DirectoryNode extends Node {
     for (const fname of files) {
       const fpath = path.join(this.path, fname);
       const fstat = fs.statSync(fpath);
-
       if (fstat.isDirectory()) {
         const dirNode = NodeFactory.create(NodeType.directory, fpath, this);
 

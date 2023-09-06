@@ -26,6 +26,7 @@ import { Logger } from "../Utils/Logger";
 import { Artifact, Locator, LocatorRunner } from "./ArtifactLocator";
 
 type Cfg = {
+  "onecc":Onecc;
   "one-import-tflite": CfgOneImportTflite;
   "one-import-onnx": CfgOneImportOnnx;
   "one-import-tf": CfgOneImportTf;
@@ -36,7 +37,7 @@ type CfgKeys = keyof Cfg;
 type CfgOneImportTflite = any;
 type CfgOneImportOnnx = any;
 type CfgOneImportTf = any;
-
+type Onecc = any;
 /**
  * @brief A helper class to get parsed artifacts (baseModels, products)
  *        The paths in the artifacts are all resolved. (No '..' in the path)

@@ -109,7 +109,6 @@ class BaseModelToCfgMap {
   public init(cfgList: string[], cfgToCfgObjMap: CfgToCfgObjMap) {
     cfgList.forEach((cfg) => {
       const cfgObj = cfgToCfgObjMap.get(cfg);
-
       (cfgObj ? cfgObj.getBaseModelsExists : []).forEach((artifact) => {
         this._map.get(artifact.path)
           ? this._map.set(
@@ -218,6 +217,11 @@ export class OneStorage {
   private _baseModelToCfgsMap: BaseModelToCfgMap;
 
   /**
+   * @brief A list of fpath compiled with Edge TPU Compiler
+   */
+  private _isCompiledWithEdgeTPU: string[];
+
+  /**
    * Get the list of .cfg files within the workspace
    * @param root  the file or directory,
    *              which MUST exist in the file system
@@ -259,6 +263,17 @@ export class OneStorage {
     }
   }
 
+  private _getCompiledWithEdgeTPUCompiler(cfgList: string[]):string[]{
+    const compiledWithEdgeTPUCompiler : string[]= [];
+
+    cfgList.forEach(cfg=>{
+      const cfgObj = this._cfgToCfgObjMap.get(cfg);
+      console.log(cfgObj?.rawObj.onecc);
+    });
+
+    return compiledWithEdgeTPUCompiler;
+  }
+
   private static _delete(node: Node) {
     const instance = OneStorage.get();
     instance._nodeMap.delete(node.path);
@@ -281,7 +296,8 @@ export class OneStorage {
 
     this._cfgToCfgObjMap = new CfgToCfgObjMap();
     this._cfgToCfgObjMap.init(cfgList);
-
+    this._isCompiledWithEdgeTPU = this._getCompiledWithEdgeTPUCompiler(cfgList);
+    
     this._baseModelToCfgsMap = new BaseModelToCfgMap();
     this._baseModelToCfgsMap.init(cfgList, this._cfgToCfgObjMap);
   }
