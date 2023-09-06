@@ -139,7 +139,7 @@ export function displayCfgToEditor(cfg) {
   document.getElementById("ONNXUnrollLSTM").checked = cfgBoolean(
     oneImportONNX?.["unroll_lstm"]
   );
-
+  
   // TODO Support one-import-bcq
 
   // TODO Support import EdgeTPU
@@ -149,14 +149,11 @@ export function displayCfgToEditor(cfg) {
   );
   document.getElementById("EdgeTPUOutputPath").value = cfgString(
     oneImportEdgeTPU?.["output_path"]
-  );
+  );  
   document.getElementById("EdgeTPUHelp").checked = cfgBoolean(
     oneImportEdgeTPU?.["help"]
   );
-  document.getElementById("EdgeTPUSearchDelegate").checked = cfgBoolean(
-    oneImportEdgeTPU?.["search_delegate"]
-  );
-  
+
   updateImportUI();
 
   const oneOptimize = cfg["one-optimize"];
