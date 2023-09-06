@@ -153,6 +153,21 @@ export function displayCfgToEditor(cfg) {
   document.getElementById("EdgeTPUHelp").checked = cfgBoolean(
     oneImportEdgeTPU?.["help"]
   );
+  document.getElementById("EdgeTPUShowOperations").checked = cfgBoolean(
+    oneImportEdgeTPU?.["show_operations"]
+  );
+  document.getElementById("EdgeTPUMinRuntimeVersion").value = cfgString(
+    oneImportEdgeTPU?.["min_runtime_version"],
+    "14"
+  );
+  document.getElementById("EdgeTPUSearchDelegate").checked = cfgBoolean(
+    oneImportEdgeTPU?.["search_delegate"]
+  );
+  document.getElementById("EdgeTPUDelegateSearchStep").value = cfgString(
+    oneImportEdgeTPU?.["delegate_search_step"],
+    1
+  );
+
 
   updateImportUI();
 
@@ -290,6 +305,7 @@ export function displayCfgToEditor(cfg) {
   );
 }
 
+
 function cfgString(str, defaultStr = "") {
   if (str === null || str === undefined) {
     return defaultStr;
@@ -308,3 +324,4 @@ function cfgBoolean(str) {
 
   return false;
 }
+

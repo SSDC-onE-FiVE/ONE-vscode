@@ -32,6 +32,8 @@ export function updateImportUI() {
     "optionImportEdgeTPUAdvanced"
   );
   const edgeTPUMinRuntimeVersion = document.getElementById("EdgeTPUMinRuntimeVersion");
+  const edgeTPUSearchDelegate = document.getElementById("EdgeTPUSearchDelegate");
+  const edgeTPUDelegateSearchStepDiv = document.getElementById("EdgeTPUDelegateSearchStepDiv");
 
   const versionList = [10, 11, 12, 13, 14];
   
@@ -44,6 +46,8 @@ export function updateImportUI() {
   onnxAdvancedOptions.style.display = "none";
   edgeTPUBasicOptions.style.display = "none";
   edgeTPUAdvancedOptions.style.display = "none";
+  // edgeTPUDelegateSearchStepDiv.style.display = "none";
+  // edgeTPUDelegateSearchStepDiv.style.display = edgeTPUDelegateSearchStep.checked ? "block" : "none";
 
   switch (modelType.value) {
     case "pb":
@@ -69,7 +73,8 @@ export function updateImportUI() {
           var option = new Option(version); 
           edgeTPUMinRuntimeVersion.append(option);
         });
-      }
+      } 
+      edgeTPUDelegateSearchStepDiv.style.display = edgeTPUSearchDelegate.checked ? "block" : "none";
       edgeTPUBasicOptions.style.display = "block";
       edgeTPUAdvancedOptions.style.display = "block";
       break;
