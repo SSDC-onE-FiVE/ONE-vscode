@@ -291,12 +291,12 @@ export function updateImportONNX() {
   });
 }
 
-function addPostfixToFileName(filePath, postfix = "") {
-  if(filePath.trim() === ""){
+function addPostfixToFileName(filePath = "", postfix = "") {
+  if (filePath.trim() === "") {
     return "";
   }
   const parts = filePath.split(".");
-  let newFilePath = undefined;
+  let newFilePath = "";
   if (parts.length < 2) {
     newFilePath = `${filePath}${postfix}`;
   } else {
