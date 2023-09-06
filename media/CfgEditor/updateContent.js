@@ -305,6 +305,7 @@ function addPostfixToFileName(filePath = "", postfix = "") {
     const newFileName = `${fileName}${postfix}`;
     newFilePath = `${newFileName}.${fileExtension}`;
   }
+
   return newFilePath;
 }
 
@@ -321,6 +322,15 @@ export function updateImportEdgeTPU() {
       "_edgetpu"
     )
   );
+  content += iniKeyValueString(
+    "help",
+    document.getElementById("EdgeTPUHelp").checked
+  );
+  content += iniKeyValueString(
+    "show_operations",
+    document.getElementById("EdgeTPUShowOperations").checked
+  );
+
   postMessageToVsCode({
     type: "setSection",
     section: "one-import-edgetpu",
