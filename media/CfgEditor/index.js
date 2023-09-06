@@ -336,7 +336,14 @@ function registerONNXOptions() {
   });
 }
 
-function registerEdgeTPUOptions() {}
+function registerEdgeTPUOptions() {
+  const edgeTPUIntermediateTensors = document.getElementById("EdgeTPUIntermediateTensorsInputArrays");
+
+  edgeTPUIntermediateTensors.addEventListener("input",function(){
+    updateImportEdgeTPU();
+    applyUpdates();
+  });
+}
 
 function registerOptimizeOptions() {
   const optimizeInputPath = document.getElementById("optimizeInputPath");

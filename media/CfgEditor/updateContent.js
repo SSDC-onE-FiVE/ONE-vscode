@@ -293,6 +293,11 @@ export function updateImportONNX() {
 
 export function updateImportEdgeTPU() {
   let content = "";
+  content += iniKeyValueString(
+    "intermediate_tensors",
+    document.getElementById("EdgeTPUIntermediateTensorsInputArrays").value,
+  );
+
   postMessageToVsCode({
     type: "setSection",
     section: "one-import-edgetpu",
