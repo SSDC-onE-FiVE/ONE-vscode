@@ -291,11 +291,57 @@ export function updateImportONNX() {
   });
 }
 
+function addPostfixToFileName(filePath = "", postfix = "") {
+  if (filePath.trim() === "") {
+    return "";
+  }
+  const parts = filePath.split(".");
+  let newFilePath = "";
+  if (parts.length < 2) {
+    newFilePath = `${filePath}${postfix}`;
+  } else {
+    const fileName = parts.slice(0, -1).join(".");
+    const fileExtension = parts[parts.length - 1];
+    const newFileName = `${fileName}${postfix}`;
+    newFilePath = `${newFileName}.${fileExtension}`;
+  }
+
+  return newFilePath;
+}
+
 export function updateImportEdgeTPU() {
   let content = "";
   content += iniKeyValueString(
+    "input_path",
+    document.getElementById("EdgeTPUInputPath").value
+  );
+  content += iniKeyValueString(
+    "output_path",
+    addPostfixToFileName(
+      document.getElementById("EdgeTPUInputPath").value,
+      "_edgetpu"
+    )
+  );
+  content += iniKeyValueString(
+    "help",
+    document.getElementById("EdgeTPUHelp").checked
+  );
+  content += iniKeyValueString(
     "intermediate_tensors",
     document.getElementById("EdgeTPUIntermediateTensorsInputArrays").value,
+  );
+  content += iniKeyValueString(
+    "show_operations",
+    document.getElementById("EdgeTPUShowOperations").checked
+  );
+  content += iniKeyValueString(
+    "min_runtime_version",
+    document.getElementById("EdgeTPUMinRuntimeVersion").value,    
+    "14"
+  );
+  content += iniKeyValueString(
+    "search_delegate",
+    document.getElementById("EdgeTPUSearchDelegate").checked
   );
 
   postMessageToVsCode({

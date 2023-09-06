@@ -139,12 +139,35 @@ export function displayCfgToEditor(cfg) {
   document.getElementById("ONNXUnrollLSTM").checked = cfgBoolean(
     oneImportONNX?.["unroll_lstm"]
   );
-
+  
   // TODO Support one-import-bcq
   const oneImportEdgeTPU = cfg["one-import-edgetpu"];
   document.getElementById("EdgeTPUIntermediateTensorsInputArrays").value = cfgString(
     oneImportEdgeTPU?.["intermediate_tensors"]
   );
+
+  // TODO Support import EdgeTPU
+  const oneImportEdgeTPU = cfg["one-import-edgetpu"];
+  document.getElementById("EdgeTPUInputPath").value = cfgString(
+    oneImportEdgeTPU?.["input_path"]
+  );
+  document.getElementById("EdgeTPUOutputPath").value = cfgString(
+    oneImportEdgeTPU?.["output_path"]
+  );  
+  document.getElementById("EdgeTPUHelp").checked = cfgBoolean(
+    oneImportEdgeTPU?.["help"]
+  );
+  document.getElementById("EdgeTPUShowOperations").checked = cfgBoolean(
+    oneImportEdgeTPU?.["show_operations"]
+  );
+  document.getElementById("EdgeTPUMinRuntimeVersion").value = cfgString(
+    oneImportEdgeTPU?.["min_runtime_version"],
+    "14"
+  );
+  document.getElementById("EdgeTPUSearchDelegate").checked = cfgBoolean(
+    oneImportEdgeTPU?.["search_delegate"]
+  );
+
 
   updateImportUI();
 

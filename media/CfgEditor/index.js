@@ -337,11 +337,46 @@ function registerONNXOptions() {
 }
 
 function registerEdgeTPUOptions() {
+  const edgeTPUInputPath = document.getElementById("EdgeTPUInputPath");
+  const edgeTPUHelp = document.getElementById("EdgeTPUHelp");
   const edgeTPUIntermediateTensors = document.getElementById("EdgeTPUIntermediateTensorsInputArrays");
-
+  const edgeTPUShowOperations = document.getElementById(
+    "EdgeTPUShowOperations"
+  );
+  const edgeTPUMinRuntimeVersion = document.getElementById(
+    "EdgeTPUMinRuntimeVersion"
+  );  
+  const edgeTPUSearchDelegate = document.getElementById(
+    "EdgeTPUSearchDelegate"
+  );
+  
+  edgeTPUInputPath.addEventListener("input", function () {
+    updateImportEdgeTPU();
+    applyUpdates();
+  });
+  edgeTPUHelp.addEventListener("click", function () {
+    updateImportEdgeTPU();
+    applyUpdates();
+  });
   edgeTPUIntermediateTensors.addEventListener("input",function(){
     updateImportEdgeTPU();
     applyUpdates();
+  });
+  edgeTPUShowOperations.addEventListener("click", function () {
+    updateImportEdgeTPU();
+    applyUpdates();
+  });
+  edgeTPUMinRuntimeVersion.addEventListener("input", function () {
+    updateImportEdgeTPU();
+    applyUpdates();
+  });
+  edgeTPUSearchDelegate.addEventListener("click", function () {
+    updateImportEdgeTPU();
+    applyUpdates();
+  });
+  edgeTPUSearchDelegate.addEventListener("click", function () {
+    updateImportEdgeTPU();
+    applyUpdates();   
   });
 }
 
@@ -767,6 +802,18 @@ function registerCodiconEvents() {
         oldPath: document.getElementById("CopyQuantOutputPath").value,
         postStep: "QuantizeCopy",
         postElemID: "CopyQuantOutputPath",
+      });
+    });
+  document
+    .getElementById("EdgeTPUInputPathSearch")
+    .addEventListener("click", function () {
+      postMessageToVsCode({
+        type: "getPathByDialog",
+        isFolder: false,
+        ext: ["tflite"],
+        oldPath: document.getElementById("EdgeTPUInputPath").value,
+        postStep: "ImportEdgeTPU",
+        postElemID: "EdgeTPUInputPath",
       });
     });
 }
