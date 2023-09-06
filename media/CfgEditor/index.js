@@ -336,7 +336,13 @@ function registerONNXOptions() {
   });
 }
 
-function registerEdgeTPUOptions() {}
+function registerEdgeTPUOptions() {
+  const edgeTPUHelp = document.getElementById("EdgeTPUHelp");
+  edgeTPUHelp.addEventListener("click", function () {
+    updateImportEdgeTPU();
+    applyUpdates();
+  });
+}
 
 function registerOptimizeOptions() {
   const optimizeInputPath = document.getElementById("optimizeInputPath");

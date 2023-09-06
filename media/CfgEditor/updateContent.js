@@ -293,6 +293,11 @@ export function updateImportONNX() {
 
 export function updateImportEdgeTPU() {
   let content = "";
+  content += iniKeyValueString(
+    "help",
+    document.getElementById("EdgeTPUHelp").checked
+  );
+
   postMessageToVsCode({
     type: "setSection",
     section: "one-import-edgetpu",
