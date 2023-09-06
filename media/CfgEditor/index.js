@@ -338,7 +338,20 @@ function registerONNXOptions() {
 
 function registerEdgeTPUOptions() {
   const edgeTPUInputPath = document.getElementById("EdgeTPUInputPath");
+  const edgeTPUHelp = document.getElementById("EdgeTPUHelp");
+  const edgeTPUShowOperations = document.getElementById(
+    "EdgeTPUShowOperations"
+  );
+
   edgeTPUInputPath.addEventListener("input", function () {
+    updateImportEdgeTPU();
+    applyUpdates();
+  });
+  edgeTPUHelp.addEventListener("click", function () {
+    updateImportEdgeTPU();
+    applyUpdates();
+  });
+  edgeTPUShowOperations.addEventListener("click", function () {
     updateImportEdgeTPU();
     applyUpdates();
   });
