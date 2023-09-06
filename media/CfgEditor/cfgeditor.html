@@ -217,7 +217,7 @@ limitations under the License.
                         <span class="help">
                             LSTM operation in ONNX file is unrolled so that there is no control flow in the graph
                         </span>
-                    </span>                    
+                    </span>                     
                 </div>
             </div>
             <div class="basic" id="optionImportEdgeTPUBasic">
@@ -225,6 +225,18 @@ limitations under the License.
                     Basic Options
                 </div>
                 <!-- 여기에 EdgeTPU Compile에 필요한 기본옵션을 추가하기 -->
+                <div class="option">
+                    <vscode-text-field id="EdgeTPUInputPath" startIcon="true" size="50" placeholder="">
+                        Input Path
+                        <span id="EdgeTPUInputPathSearch" slot="end" class="codicon codicon-search" style="cursor: pointer"></span>
+                    </vscode-text-field>
+                </div>
+                <div class="option">
+                    <vscode-text-field id="EdgeTPUOutputPath" startIcon="true" size="50" placeholder="" disabled="true">
+                        Output Path
+                        <span id="EdgeTPUOutputPathSearch" slot="end" class="codicon codicon-search" style="cursor: pointer"></span>
+                    </vscode-text-field>
+                </div>
             </div>
             <div class="advanced" id="optionImportEdgeTPUAdvanced">
                 <div class="title">
@@ -240,6 +252,16 @@ limitations under the License.
                             Print the command line help and exit.
                         </span>
                     </span> 
+                </div>
+                <div class="option">
+                    <vscode-checkbox id="EdgeTPUShowOperations">
+                        Show Operations (Optional)
+                    </vscode-checkbox>  
+                    <span class="codicon codicon-question" style="cursor: pointer">
+                        <span class="help">
+                            Print the log showing operations that mapped to the Edge TPU.
+                        </span>
+                    </span>
                 </div>
             </div>
         </div>

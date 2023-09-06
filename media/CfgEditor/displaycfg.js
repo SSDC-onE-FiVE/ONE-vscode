@@ -140,8 +140,25 @@ export function displayCfgToEditor(cfg) {
     oneImportONNX?.["unroll_lstm"]
   );
 
+  const oneImportEDGETPU = cfg["one-import-edgetpu"];
+  document.getElementById("EdgeTPUShowOperations").checked = cfgBoolean(
+    oneImportEDGETPU?.["show_operations"]
+  );
+
   // TODO Support one-import-bcq
   const oneImportEdgeTPU = cfg["one-import-edgetpu"];
+  document.getElementById("EdgeTPUHelp").checked = cfgBoolean(
+    oneImportEdgeTPU?.["help"]
+  );
+
+  // TODO Support import EdgeTPU
+  const oneImportEdgeTPU = cfg["one-import-edgetpu"];
+  document.getElementById("EdgeTPUInputPath").value = cfgString(
+    oneImportEdgeTPU?.["input_path"]
+  );
+  document.getElementById("EdgeTPUOutputPath").value = cfgString(
+    oneImportEdgeTPU?.["output_path"]
+  );
   document.getElementById("EdgeTPUHelp").checked = cfgBoolean(
     oneImportEdgeTPU?.["help"]
   );

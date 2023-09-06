@@ -291,11 +291,39 @@ export function updateImportONNX() {
   });
 }
 
+function addPostfixToFileName(filePath, postfix = "") {
+  const parts = filePath.split(".");
+  if (parts.length < 2) {
+    throw new Error("Invalid file ext");
+  }
+  const fileName = parts.slice(0, -1).join(".");
+  const fileExtension = parts[parts.length - 1];
+  const newFileName = `${fileName}${postfix}`;
+  const newFilePath = `${newFileName}.${fileExtension}`;
+
+  return newFilePath;
+}
+
 export function updateImportEdgeTPU() {
   let content = "";
   content += iniKeyValueString(
+    "input_path",
+    document.getElementById("EdgeTPUInputPath").value
+  );
+  content += iniKeyValueString(
+    "output_path",
+    addPostfixToFileName(
+      document.getElementById("EdgeTPUInputPath").value,
+      "_edgetpu"
+    )
+  );
+  content += iniKeyValueString(
     "help",
     document.getElementById("EdgeTPUHelp").checked
+  );
+  content += iniKeyValueString(
+    "show_operations",
+    document.getElementById("EdgeTPUShowOperations").checked
   );
 
   postMessageToVsCode({
