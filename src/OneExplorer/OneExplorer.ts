@@ -237,6 +237,16 @@ class DirectoryNode extends Node {
   }
 
   /**
+   * Check tflite file is compiled with Edge TPU Compiler
+   *
+   * To exclude Edge TPU compiled tflite file from baseModel
+   * Now check with postfix of Edge TPU Compiler's default file name
+   */
+  private isEdgeTpuCompiled(fpath: string): boolean {
+    return fpath.endsWith("_edgetpu.tflite");
+  }
+
+  /**
    * Build a sub-tree under the node
    *
    * directory          <- this
@@ -255,14 +265,13 @@ class DirectoryNode extends Node {
 
       if (fstat.isDirectory()) {
         const dirNode = NodeFactory.create(NodeType.directory, fpath, this);
-
         if (dirNode && dirNode.getChildren().length > 0) {
           this._childNodes!.push(dirNode);
         }
       } else if (
         fstat.isFile() &&
         (fname.endsWith(".pb") ||
-          fname.endsWith(".tflite") ||
+          (fname.endsWith(".tflite") && !this.isEdgeTpuCompiled(fpath)) ||
           fname.endsWith(".onnx"))
       ) {
         const baseModelNode = NodeFactory.create(
@@ -412,6 +421,8 @@ class ProductNode extends Node {
     ".tv2o",
     ".json",
     ".circle.log",
+    ".tflite",
+    ".tflite.log",
   ];
   // Do not open file as default
   static defaultOpenViewType = undefined;
