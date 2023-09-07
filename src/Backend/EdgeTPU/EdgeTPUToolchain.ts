@@ -16,56 +16,80 @@
 
 import * as cp from "child_process";
 import * as vscode from "vscode";
+import * as ini from "ini";
+import * as fs from "fs";
 
 import { pipedSpawnSync } from "../../Utils/PipedSpawnSync";
-import { Balloon } from "../../Utils/Balloon";
 import { Backend } from "../Backend";
 import { Command } from "../Command";
 import { Compiler } from "../Compiler";
 import { Executor } from "../Executor";
 import { PackageInfo, ToolchainInfo, Toolchains } from "../Toolchain";
-import {
-  DebianArch,
-  DebianRepo,
-  DebianToolchain,
-} from "../ToolchainImpl/DebianToolchain";
+import { DebianToolchain } from "../ToolchainImpl/DebianToolchain";
 import { Version } from "../Version";
 
-class OneDebianToolchain extends DebianToolchain {
+class EdgeTPUDebianToolchain extends DebianToolchain {
   run(cfg: string): Command {
-    const configs = vscode.workspace.getConfiguration();
-    const value = configs.get("one.toolchain.githubToken", "");
-    if (!value) {
-      Balloon.showGithubTokenErrorMessage();
+    let cmd = new Command("edgetpu_compiler");
+    var config = ini.parse(fs.readFileSync(cfg, "utf-8").trim());
+
+    if (config["one-import-edgetpu"] === undefined) {
+      return cmd;
     }
 
-    let cmd = new Command("onecc-docker");
-    if (value !== "") {
-      cmd.push("-t");
-      cmd.push(value);
+    let outputPath = config["one-import-edgetpu"]["output_path"];
+    cmd.push("--out_dir");
+    cmd.push(outputPath);
+
+    let help = config["one-import-edgetpu"]["help"];
+    if (help === "True") {
+      cmd.push("--help");
     }
-    cmd.push("-C");
-    cmd.push(cfg);
+
+    let intermediateTensors =
+      config["one-import-edgetpu"]["intermediate_tensors"];
+    if (intermediateTensors !== undefined) {
+      cmd.push("--intermediate_tensors");
+      cmd.push(intermediateTensors);
+    }
+
+    let showOperations = config["one-import-edgetpu"]["show_operations"];
+    if (showOperations === "True") {
+      cmd.push("--show_operations");
+    }
+
+    let minRuntimeVersion = config["one-import-edgetpu"]["min_runtime_version"];
+    if (minRuntimeVersion !== undefined) {
+      cmd.push("--min_runtime_version");
+      cmd.push(minRuntimeVersion);
+    }
+
+    let searchDelegate = config["one-import-edgetpu"]["search_delegate"];
+    if (searchDelegate === "True") {
+      cmd.push("--search_delegate");
+    }
+
+    let delegateSearchStep =
+      config["one-import-edgetpu"]["delegate_search_step"];
+    if (delegateSearchStep !== undefined) {
+      cmd.push("--delegate_search_step");
+      cmd.push(delegateSearchStep);
+    }
+
+    let inputPath = config["one-import-edgetpu"]["input_path"];
+    cmd.push(inputPath);
+
     return cmd;
   }
 }
 
-class OneCompiler implements Compiler {
+class EdgeTPUCompiler implements Compiler {
   private readonly toolchainTypes: string[];
   private readonly toolchainName: string;
-  private readonly debianRepo: DebianRepo;
-  private readonly debianArch: DebianArch;
 
   constructor() {
-    this.toolchainName = "onecc-docker";
+    this.toolchainName = "edgetpu-compiler";
     this.toolchainTypes = ["latest"];
-
-    this.debianRepo = new DebianRepo(
-      "http://ppa.launchpad.net/one-compiler/onecc-docker/ubuntu",
-      "bionic",
-      "main"
-    );
-    this.debianArch = DebianArch.amd64;
   }
 
   getToolchainTypes(): string[] {
@@ -78,25 +102,22 @@ class OneCompiler implements Compiler {
     }
 
     let _version = version;
-    let option = "";
 
     const optionIndex = version.search(/[~+-]/);
     if (optionIndex !== -1) {
-      option = version.slice(optionIndex);
       _version = version.slice(0, optionIndex);
     }
 
     const splitedVersion = _version.split(".");
 
-    if (splitedVersion.length > 3) {
+    if (splitedVersion.length > 2) {
       throw Error("Invalid version format.");
     }
 
     let major: number | string;
     let minor: number | string;
-    let patch: number | string;
 
-    [major = "0", minor = "0", patch = "0"] = _version.split(".");
+    [major = "0", minor = "0"] = _version.split(".");
 
     const epochIndex = major.search(/:/);
     if (epochIndex !== -1) {
@@ -105,12 +126,12 @@ class OneCompiler implements Compiler {
 
     major = Number(major);
     minor = Number(minor);
-    patch = Number(patch);
 
-    if (isNaN(major) || isNaN(minor) || isNaN(patch)) {
+    if (isNaN(major) || isNaN(minor)) {
       throw Error("Invalid version format.");
     }
-    return new Version(major, minor, patch, option);
+
+    return new Version(major, minor);
   }
 
   getToolchains(
@@ -169,11 +190,7 @@ class OneCompiler implements Compiler {
         this.parseVersion(version)
       );
 
-      const toolchain = new OneDebianToolchain(
-        toolchainInfo,
-        this.debianRepo,
-        this.debianArch
-      );
+      const toolchain = new EdgeTPUDebianToolchain(toolchainInfo);
       availableToolchains.push(toolchain);
     }
 
@@ -215,15 +232,8 @@ class OneCompiler implements Compiler {
     const versionStr = installedToolchain.slice(0, descriptionIdx).trim();
     const description = installedToolchain.slice(descriptionIdx).trim();
 
-    // NOTE
-    // onecc-docker does not have any explict dependencies,
-    // but it has internally dependency to one-compiler and it is seen in depends.
-
-    // TODO
-    // onecc-docker's depends should be modified later so that we can read the one-compiler version.
-
     const depends: Array<PackageInfo> = [
-      new PackageInfo("one-compiler", new Version(1, 21, 0)),
+      new PackageInfo("edgetpu_compiler", new Version(16, 0)),
     ];
     const toolchainInfo = new ToolchainInfo(
       this.toolchainName,
@@ -231,11 +241,7 @@ class OneCompiler implements Compiler {
       this.parseVersion(versionStr),
       depends
     );
-    const toolchain = new OneDebianToolchain(
-      toolchainInfo,
-      this.debianRepo,
-      this.debianArch
-    );
+    const toolchain = new EdgeTPUDebianToolchain(toolchainInfo);
     return [toolchain];
   }
 
@@ -247,7 +253,7 @@ class OneCompiler implements Compiler {
     const scriptPath = vscode.Uri.joinPath(
       ext!.extensionUri,
       "script",
-      "prerequisitesForGetOneToolchain.sh"
+      "prerequisitesForGetEdgeTPUToolchain.sh"
     ).fsPath;
 
     const cmd = new Command("/bin/sh", [`${scriptPath}`]);
@@ -256,13 +262,13 @@ class OneCompiler implements Compiler {
   }
 }
 
-class OneToolchain implements Backend {
+class EdgeTPUToolchain implements Backend {
   private readonly backendName: string;
-  private readonly toolchainCompiler: Compiler | undefined;
+  private readonly toolchainCompiler: EdgeTPUCompiler | undefined;
 
   constructor() {
-    this.backendName = "ONE";
-    this.toolchainCompiler = new OneCompiler();
+    this.backendName = "EdgeTPU";
+    this.toolchainCompiler = new EdgeTPUCompiler();
   }
 
   name(): string {
@@ -282,4 +288,4 @@ class OneToolchain implements Backend {
   }
 }
 
-export { OneDebianToolchain, OneCompiler, OneToolchain };
+export { EdgeTPUDebianToolchain, EdgeTPUCompiler, EdgeTPUToolchain };
