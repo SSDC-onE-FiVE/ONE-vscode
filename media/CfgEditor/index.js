@@ -338,7 +338,6 @@ function registerONNXOptions() {
 
 function registerEdgeTPUOptions() {
   const edgeTPUInputPath = document.getElementById("EdgeTPUInputPath");
-  const edgeTPUHelp = document.getElementById("EdgeTPUHelp");
   const edgeTPUIntermediateTensors = document.getElementById("EdgeTPUIntermediateTensorsInputArrays");
   const edgeTPUShowOperations = document.getElementById(
     "EdgeTPUShowOperations"
@@ -357,10 +356,6 @@ function registerEdgeTPUOptions() {
   );
 
   edgeTPUInputPath.addEventListener("input", function () {
-    updateImportEdgeTPU();
-    applyUpdates();
-  });
-  edgeTPUHelp.addEventListener("click", function () {
     updateImportEdgeTPU();
     applyUpdates();
   });
