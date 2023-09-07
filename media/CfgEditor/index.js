@@ -382,7 +382,7 @@ function registerEdgeTPUOptions() {
   });
   edgeTPUDelegateSearchStep.addEventListener("input", function () {
     edgeTPUDelegateSearchStep.value =
-      edgeTPUDelegateSearchStep.value * 1 < 1
+      edgeTPUDelegateSearchStep.value < 1
         ? "1"
         : edgeTPUDelegateSearchStep.value;
     updateImportEdgeTPU();
