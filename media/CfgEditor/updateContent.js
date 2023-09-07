@@ -341,7 +341,7 @@ export function updateImportEdgeTPU() {
   );  
   content += iniKeyValueString(
     "delegate_search_step",
-    document.getElementById("EdgeTPUSearchDelegate").checked ? (document.getElementById("EdgeTPUDelegateSearchStep").value < 1 ? 1 : document.getElementById("EdgeTPUDelegateSearchStep").value) : undefined
+    document.getElementById("EdgeTPUSearchDelegate").checked ? (document.getElementById("EdgeTPUDelegateSearchStep").value < 1 ? "1" : document.getElementById("EdgeTPUDelegateSearchStep").value) : undefined
   );
 
   postMessageToVsCode({

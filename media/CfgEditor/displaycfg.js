@@ -165,7 +165,7 @@ export function displayCfgToEditor(cfg) {
   );
   document.getElementById("EdgeTPUDelegateSearchStep").value = cfgString(
     oneImportEdgeTPU?.["delegate_search_step"],
-    1
+    "1"
   );
 
 
