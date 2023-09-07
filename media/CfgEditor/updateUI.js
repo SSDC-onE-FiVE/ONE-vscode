@@ -25,6 +25,23 @@ export function updateImportUI() {
   const onnxAdvancedOptions = document.getElementById(
     "optionImportONNXAdvanced"
   );
+  const edgeTPUBasicOptions = document.getElementById(
+    "optionImportEdgeTPUBasic"
+  );
+  const edgeTPUAdvancedOptions = document.getElementById(
+    "optionImportEdgeTPUAdvanced"
+  );
+  const edgeTPUMinRuntimeVersion = document.getElementById(
+    "EdgeTPUMinRuntimeVersion"
+  );
+  const edgeTPUSearchDelegate = document.getElementById(
+    "EdgeTPUSearchDelegate"
+  );
+  const edgeTPUDelegateSearchStepDiv = document.getElementById(
+    "EdgeTPUDelegateSearchStepDiv"
+  );
+
+  const versionList = [10, 11, 12, 13, 14];
 
   pbBasicOptions.style.display = "none";
   pbAdvancedOptions.style.display = "none";
@@ -33,6 +50,10 @@ export function updateImportUI() {
   tfliteBasicOptions.style.display = "none";
   onnxBasicOptions.style.display = "none";
   onnxAdvancedOptions.style.display = "none";
+  edgeTPUBasicOptions.style.display = "none";
+  edgeTPUAdvancedOptions.style.display = "none";
+  // edgeTPUDelegateSearchStepDiv.style.display = "none";
+  // edgeTPUDelegateSearchStepDiv.style.display = edgeTPUDelegateSearchStep.checked ? "block" : "none";
 
   switch (modelType.value) {
     case "pb":
@@ -51,6 +72,19 @@ export function updateImportUI() {
     case "onnx":
       onnxBasicOptions.style.display = "block";
       onnxAdvancedOptions.style.display = "block";
+      break;
+    case "edgetpu":
+      if (edgeTPUMinRuntimeVersion.childElementCount !== versionList.length) {
+        versionList.forEach((version) => {
+          var option = new Option(version);
+          edgeTPUMinRuntimeVersion.append(option);
+        });
+      }
+      edgeTPUDelegateSearchStepDiv.style.display = edgeTPUSearchDelegate.checked
+        ? "block"
+        : "none";
+      edgeTPUBasicOptions.style.display = "block";
+      edgeTPUAdvancedOptions.style.display = "block";
       break;
     default:
       break;
