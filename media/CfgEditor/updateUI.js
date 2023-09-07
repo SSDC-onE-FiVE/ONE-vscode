@@ -31,12 +31,18 @@ export function updateImportUI() {
   const edgeTPUAdvancedOptions = document.getElementById(
     "optionImportEdgeTPUAdvanced"
   );
-  const edgeTPUMinRuntimeVersion = document.getElementById("EdgeTPUMinRuntimeVersion");
-  const edgeTPUSearchDelegate = document.getElementById("EdgeTPUSearchDelegate");
-  const edgeTPUDelegateSearchStepDiv = document.getElementById("EdgeTPUDelegateSearchStepDiv");
+  const edgeTPUMinRuntimeVersion = document.getElementById(
+    "EdgeTPUMinRuntimeVersion"
+  );
+  const edgeTPUSearchDelegate = document.getElementById(
+    "EdgeTPUSearchDelegate"
+  );
+  const edgeTPUDelegateSearchStepDiv = document.getElementById(
+    "EdgeTPUDelegateSearchStepDiv"
+  );
 
   const versionList = [10, 11, 12, 13, 14];
-  
+
   pbBasicOptions.style.display = "none";
   pbAdvancedOptions.style.display = "none";
   savedBasicOptions.style.display = "none";
@@ -68,13 +74,15 @@ export function updateImportUI() {
       onnxAdvancedOptions.style.display = "block";
       break;
     case "edgetpu":
-      if(edgeTPUMinRuntimeVersion.childElementCount !== versionList.length){
-        versionList.forEach(version => {
-          var option = new Option(version); 
+      if (edgeTPUMinRuntimeVersion.childElementCount !== versionList.length) {
+        versionList.forEach((version) => {
+          var option = new Option(version);
           edgeTPUMinRuntimeVersion.append(option);
         });
-      } 
-      edgeTPUDelegateSearchStepDiv.style.display = edgeTPUSearchDelegate.checked ? "block" : "none";
+      }
+      edgeTPUDelegateSearchStepDiv.style.display = edgeTPUSearchDelegate.checked
+        ? "block"
+        : "none";
       edgeTPUBasicOptions.style.display = "block";
       edgeTPUAdvancedOptions.style.display = "block";
       break;

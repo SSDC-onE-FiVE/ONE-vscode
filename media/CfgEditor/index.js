@@ -336,7 +336,7 @@ function registerONNXOptions() {
   });
 }
 
-function registerEdgeTPUOptions() {  
+function registerEdgeTPUOptions() {
   const edgeTPUInputPath = document.getElementById("EdgeTPUInputPath");
   const edgeTPUHelp = document.getElementById("EdgeTPUHelp");
   const edgeTPUShowOperations = document.getElementById(
@@ -344,7 +344,7 @@ function registerEdgeTPUOptions() {
   );
   const edgeTPUMinRuntimeVersion = document.getElementById(
     "EdgeTPUMinRuntimeVersion"
-  );  
+  );
   const edgeTPUSearchDelegate = document.getElementById(
     "EdgeTPUSearchDelegate"
   );
@@ -354,7 +354,7 @@ function registerEdgeTPUOptions() {
   const edgeTPUDelegateSearchStepDiv = document.getElementById(
     "EdgeTPUDelegateSearchStepDiv"
   );
-  
+
   edgeTPUInputPath.addEventListener("input", function () {
     updateImportEdgeTPU();
     applyUpdates();
@@ -371,19 +371,24 @@ function registerEdgeTPUOptions() {
     updateImportEdgeTPU();
     applyUpdates();
   });
-  edgeTPUSearchDelegate.addEventListener("click", function(){    
-    if(edgeTPUSearchDelegate.checked) {edgeTPUDelegateSearchStepDiv.style.display = "block";}
-    else {edgeTPUDelegateSearchStepDiv.style.display = "none";}
+  edgeTPUSearchDelegate.addEventListener("click", function () {
+    if (edgeTPUSearchDelegate.checked) {
+      edgeTPUDelegateSearchStepDiv.style.display = "block";
+    } else {
+      edgeTPUDelegateSearchStepDiv.style.display = "none";
+    }
     updateImportEdgeTPU();
     applyUpdates();
   });
-  edgeTPUDelegateSearchStep.addEventListener("input", function(){
-    edgeTPUDelegateSearchStep.value = edgeTPUDelegateSearchStep.value * 1 < 1 ? "1" : edgeTPUDelegateSearchStep.value;
+  edgeTPUDelegateSearchStep.addEventListener("input", function () {
+    edgeTPUDelegateSearchStep.value =
+      edgeTPUDelegateSearchStep.value * 1 < 1
+        ? "1"
+        : edgeTPUDelegateSearchStep.value;
     updateImportEdgeTPU();
     applyUpdates();
   });
 }
-
 
 function registerOptimizeOptions() {
   const optimizeInputPath = document.getElementById("optimizeInputPath");
