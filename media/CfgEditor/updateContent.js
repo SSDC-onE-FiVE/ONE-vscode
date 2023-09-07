@@ -324,7 +324,7 @@ export function updateImportEdgeTPU() {
   );
   content += iniKeyValueString(
     "intermediate_tensors",
-    document.getElementById("EdgeTPUIntermediateTensorsInputArrays").value,
+    document.getElementById("EdgeTPUIntermediateTensorsInputArrays").value
   );
   content += iniKeyValueString(
     "show_operations",

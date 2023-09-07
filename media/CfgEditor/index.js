@@ -338,7 +338,9 @@ function registerONNXOptions() {
 
 function registerEdgeTPUOptions() {
   const edgeTPUInputPath = document.getElementById("EdgeTPUInputPath");
-  const edgeTPUIntermediateTensors = document.getElementById("EdgeTPUIntermediateTensorsInputArrays");
+  const edgeTPUIntermediateTensors = document.getElementById(
+    "EdgeTPUIntermediateTensorsInputArrays"
+  );
   const edgeTPUShowOperations = document.getElementById(
     "EdgeTPUShowOperations"
   );
@@ -359,7 +361,7 @@ function registerEdgeTPUOptions() {
     updateImportEdgeTPU();
     applyUpdates();
   });
-  edgeTPUIntermediateTensors.addEventListener("input",function(){
+  edgeTPUIntermediateTensors.addEventListener("input", function () {
     updateImportEdgeTPU();
     applyUpdates();
   });
