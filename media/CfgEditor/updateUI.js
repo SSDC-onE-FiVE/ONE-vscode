@@ -31,6 +31,9 @@ export function updateImportUI() {
   const edgeTPUAdvancedOptions = document.getElementById(
     "optionImportEdgeTPUAdvanced"
   );
+  const edgeTPUMinRuntimeVersionDesc = document.getElementById(
+    "EdgeTPUMinRuntimeVersionDesc"
+  ); 
   const edgeTPUMinRuntimeVersion = document.getElementById(
     "EdgeTPUMinRuntimeVersion"
   );
@@ -52,8 +55,6 @@ export function updateImportUI() {
   onnxAdvancedOptions.style.display = "none";
   edgeTPUBasicOptions.style.display = "none";
   edgeTPUAdvancedOptions.style.display = "none";
-  // edgeTPUDelegateSearchStepDiv.style.display = "none";
-  // edgeTPUDelegateSearchStepDiv.style.display = edgeTPUDelegateSearchStep.checked ? "block" : "none";
 
   switch (modelType.value) {
     case "pb":
@@ -83,6 +84,9 @@ export function updateImportUI() {
       edgeTPUDelegateSearchStepDiv.style.display = edgeTPUSearchDelegate.checked
         ? "block"
         : "none";
+      if(edgeTPUMinRuntimeVersion.disabled && !edgeTPUMinRuntimeVersionDesc.classList.contains("disabled-area")){
+        edgeTPUMinRuntimeVersionDesc.className += "disabled-area";
+      }
       edgeTPUBasicOptions.style.display = "block";
       edgeTPUAdvancedOptions.style.display = "block";
       break;

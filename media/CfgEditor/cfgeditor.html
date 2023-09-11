@@ -259,54 +259,59 @@ limitations under the License.
                     </span>
                 </div>               
                 <div class="option">
-                    <div>
-                        Min Runtime Version (Optional)
+                    <div id="EdgeTPUMinRuntimeVersionDesc">
+                        <span class="dropbox-label">                        
+                            Min Runtime Version (Optional)
+                        </span>
                         <span class="codicon codicon-question" style="cursor: pointer">
                             <span class="help">
-                                Specify the lowest Edge TPU runtime version you want the model to be compatible with. <br />
-                                Version Information
-                                <table class="version-information">
-                                    <thead>
-                                        <tr>
-                                            <th> Compiler version </th>
-                                            <th> Runtime version </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>16.0</td>
-                                            <td>14</td>
-                                        </tr>
-                                        <tr>
-                                            <td>15.0</td>
-                                            <td>13</td>
-                                        </tr>
-                                        <tr>
-                                            <td>14.1</td>
-                                            <td>13</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.1.302470888</td>
-                                            <td>13</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.0.291256449</td>
-                                            <td>13</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.0.267685300</td>
-                                            <td>12</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1.0</td>
-                                            <td>10</td>
-                                        </tr>
-                                    </tbody>
-                                </table>    
+                                <span class="important-help">Only 14.0 version is compatible with compiler version 16. <br /> So it supported only Runtime version 14.0 <br /> </span>
+                                <span>
+                                    Specify the lowest Edge TPU runtime version you want the model to be compatible with. <br />
+                                    Version Information
+                                    <table class="version-information">
+                                        <thead>
+                                            <tr>
+                                                <th> Compiler version </th>
+                                                <th> Runtime version </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>16.0</td>
+                                                <td>14</td>
+                                            </tr>
+                                            <tr>
+                                                <td>15.0</td>
+                                                <td>13</td>
+                                            </tr>
+                                            <tr>
+                                                <td>14.1</td>
+                                                <td>13</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2.1.302470888</td>
+                                                <td>13</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2.0.291256449</td>
+                                                <td>13</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2.0.267685300</td>
+                                                <td>12</td>
+                                            </tr>
+                                            <tr>
+                                                <td>1.0</td>
+                                                <td>10</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>   
+                                </span> 
                             </span>
                         </span>
                     </div>
-                    <vscode-dropdown id="EdgeTPUMinRuntimeVersion">   
+                    <vscode-dropdown id="EdgeTPUMinRuntimeVersion" disabled="true">   
                     </vscode-dropdown>
                 </div>
                 <div class="option">

@@ -18,6 +18,23 @@ label {
   white-space: pre-wrap;
 }
 
+table {
+  border-top: 1px solid #cccccc;
+  border-collapse: collapse;
+  justify-self: center;
+  margin: 10px 0px;
+}
+
+th, td {
+  border-bottom: 1px solid #cccccc;
+  border-left: 1px solid #cccccc;
+  padding: 0px 5px 5px 5px;
+}
+
+th:first-child, td:first-child {
+  border-left: none;
+}
+
 .maintitle {
   width: 100%;
   display: flex;
@@ -188,4 +205,16 @@ label {
 
 .codicon.codicon-question:hover .help {
   visibility: visible;
+}
+
+.dropbox-label {
+  margin-bottom: 2px;
+}
+
+.disabled-area {
+  opacity: 0.4;
+}
+
+.important-help {
+  opacity: 1 !important;
 }
