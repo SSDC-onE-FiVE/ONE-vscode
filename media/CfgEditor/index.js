@@ -362,7 +362,7 @@ function registerEdgeTPUOptions() {
     applyUpdates();
   });
   edgeTPUIntermediateTensors.addEventListener("input", function () {
-    if(edgeTPUSearchDelegate.checked) {
+    if (edgeTPUSearchDelegate.checked) {
       edgeTPUSearchDelegate.checked = false;
     }
     updateImportEdgeTPU();
@@ -378,7 +378,7 @@ function registerEdgeTPUOptions() {
   });
   edgeTPUSearchDelegate.addEventListener("click", function () {
     if (edgeTPUSearchDelegate.checked) {
-      edgeTPUIntermediateTensors.value="";
+      edgeTPUIntermediateTensors.value = "";
       edgeTPUDelegateSearchStepDiv.style.display = "block";
     } else {
       edgeTPUDelegateSearchStepDiv.style.display = "none";
