@@ -18,7 +18,6 @@ import * as cp from "child_process";
 import * as vscode from "vscode";
 import * as ini from "ini";
 import * as fs from "fs";
-import * as path from "path";
 
 import { pipedSpawnSync } from "../../Utils/PipedSpawnSync";
 import { Backend } from "../Backend";
@@ -38,9 +37,9 @@ class EdgeTPUDebianToolchain extends DebianToolchain {
       return cmd;
     }
 
-    let outDir = path.dirname(config["one-import-edgetpu"]["output_path"]);
+    let outputPath = config["one-import-edgetpu"]["output_path"];
     cmd.push("--out_dir");
-    cmd.push(outDir);
+    cmd.push(outputPath);
 
     let help = config["one-import-edgetpu"]["help"];
     if (help === "True") {
