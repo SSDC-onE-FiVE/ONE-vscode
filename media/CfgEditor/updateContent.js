@@ -40,6 +40,42 @@ export function applyUpdates() {
   postMessageToVsCode({ type: "updateDocument" });
 }
 
+export function updateCompiler(){
+  postMessageToVsCode({
+    type: "setParam",
+    section: "compiler",
+    param: "onecc",
+    value: "False",
+  });
+  postMessageToVsCode({
+    type: "setParam",
+    section: "compiler",
+    param: "edgetpu-compiler",
+    value: "False",
+  });
+
+    switch (document.getElementById("compilerSelector").value){
+      case "ONEcc" :
+        postMessageToVsCode({
+          type: "setParam",
+          section: "compiler",
+          param: "edgetpu-compiler",
+          value: "True"
+        });
+        break;
+      case "EdgeTPU" :
+        postMessageToVsCode({
+          type: "setParam",
+          section: "compiler",
+          param: "onecc",
+          value: "True"
+        });
+       break;        
+      default:
+        break;
+    }
+}
+
 export function updateSteps() {
   postMessageToVsCode({
     type: "setParam",
@@ -63,12 +99,6 @@ export function updateSteps() {
     type: "setParam",
     section: "onecc",
     param: "one-import-onnx",
-    value: "False",
-  });
-  postMessageToVsCode({
-    type: "setParam",
-    section: "onecc",
-    param: "one-import-edgetpu",
     value: "False",
   });
   if (document.getElementById("checkboxImport").checked) {
@@ -96,14 +126,6 @@ export function updateSteps() {
           type: "setParam",
           section: "onecc",
           param: "one-import-onnx",
-          value: "True",
-        });
-        break;
-      case "edgetpu":
-        postMessageToVsCode({
-          type: "setParam",
-          section: "onecc",
-          param: "one-import-edgetpu",
           value: "True",
         });
         break;
@@ -143,7 +165,26 @@ export function updateSteps() {
     value: document.getElementById("checkboxProfile").checked
       ? "True"
       : "False",
-  });
+  }); 
+}
+
+export function updateEdgeTPUStep(){
+  postMessageToVsCode({
+    type: "setParam",
+    section: "edgetpu-compiler",
+    param: "edgetpu-compile",
+    value: document.getElementById("checkboxEdgeTPUCompile").checked
+    ? "True"
+    : "False",
+  }); 
+  postMessageToVsCode({
+    type: "setParam",
+    section: "edgetpu-compiler",
+    param: "edgetpu-profile",
+    value: document.getElementById("checkboxEdgeTPUProfile").checked
+    ? "True"
+    : "False",
+  }); 
 }
 
 export function updateImportInputModelType() {
@@ -162,9 +203,6 @@ export function updateImportInputModelType() {
       break;
     case "onnx":
       updateImportONNX();
-      break;
-    case "edgetpu":
-      updateImportEdgeTPU();
       break;
     default:
       break;
@@ -309,7 +347,7 @@ function addPostfixToFileName(filePath = "", postfix = "") {
   return newFilePath;
 }
 
-export function updateImportEdgeTPU() {
+export function updateEdgeTPUCompile() {
   let content = "";
   content += iniKeyValueString(
     "input_path",
@@ -350,7 +388,7 @@ export function updateImportEdgeTPU() {
 
   postMessageToVsCode({
     type: "setSection",
-    section: "one-import-edgetpu",
+    section: "edgetpu-compile",
     param: content,
   });
 }
@@ -379,6 +417,7 @@ export function updateOptimize() {
     param: content,
   });
 }
+
 
 export function updateQuantizeActionType() {
   switch (document.getElementById("quantizeActionType").value) {
