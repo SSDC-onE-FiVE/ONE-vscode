@@ -156,7 +156,7 @@ suite("EdgeTPUCompiler", function () {
       const version2 = new Version(2, 1, 302470888);
       assert.deepEqual(version1, version2);
     });
-    test("returns Version object from string version without minor", function () {
+    test("returns Version object from string version without patch", function () {
       const edgeTPUCompiler = new EdgeTPUCompiler();
       const version1 = edgeTPUCompiler.parseVersion("1.0-beta");
       const version2 = new Version(1, 0, 0, "-beta");
