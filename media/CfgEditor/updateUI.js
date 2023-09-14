@@ -25,23 +25,6 @@ export function updateImportUI() {
   const onnxAdvancedOptions = document.getElementById(
     "optionImportONNXAdvanced"
   );
-  const edgeTPUBasicOptions = document.getElementById(
-    "optionImportEdgeTPUBasic"
-  );
-  const edgeTPUAdvancedOptions = document.getElementById(
-    "optionImportEdgeTPUAdvanced"
-  );
-  const edgeTPUMinRuntimeVersion = document.getElementById(
-    "EdgeTPUMinRuntimeVersion"
-  );
-  const edgeTPUSearchDelegate = document.getElementById(
-    "EdgeTPUSearchDelegate"
-  );
-  const edgeTPUDelegateSearchStepDiv = document.getElementById(
-    "EdgeTPUDelegateSearchStepDiv"
-  );
-
-  const versionList = [10, 11, 12, 13, 14];
 
   pbBasicOptions.style.display = "none";
   pbAdvancedOptions.style.display = "none";
@@ -50,10 +33,6 @@ export function updateImportUI() {
   tfliteBasicOptions.style.display = "none";
   onnxBasicOptions.style.display = "none";
   onnxAdvancedOptions.style.display = "none";
-  edgeTPUBasicOptions.style.display = "none";
-  edgeTPUAdvancedOptions.style.display = "none";
-  // edgeTPUDelegateSearchStepDiv.style.display = "none";
-  // edgeTPUDelegateSearchStepDiv.style.display = edgeTPUDelegateSearchStep.checked ? "block" : "none";
 
   switch (modelType.value) {
     case "pb":
@@ -72,19 +51,6 @@ export function updateImportUI() {
     case "onnx":
       onnxBasicOptions.style.display = "block";
       onnxAdvancedOptions.style.display = "block";
-      break;
-    case "edgetpu":
-      if (edgeTPUMinRuntimeVersion.childElementCount !== versionList.length) {
-        versionList.forEach((version) => {
-          var option = new Option(version);
-          edgeTPUMinRuntimeVersion.append(option);
-        });
-      }
-      edgeTPUDelegateSearchStepDiv.style.display = edgeTPUSearchDelegate.checked
-        ? "block"
-        : "none";
-      edgeTPUBasicOptions.style.display = "block";
-      edgeTPUAdvancedOptions.style.display = "block";
       break;
     default:
       break;
@@ -153,4 +119,59 @@ export function updateStepUI(step) {
 
   const stepbar = document.getElementById("stepbar" + step);
   stepbar.classList.add("current");
+}
+
+export function updateCompilerUI() {
+  const compilerSelector = document.getElementById("compilerSelector");
+  const statusONEcc = document.getElementById("statusONEcc");
+  const statusEdgeTPU = document.getElementById("statusEdgeTPU");
+
+  statusONEcc.style.display = "none";
+  statusEdgeTPU.style.display = "none";  
+  
+  if(compilerSelector.value === "ONEcc") {
+    statusONEcc.style.display = "block";
+  } else {    
+    statusEdgeTPU.style.display = "block";
+  }
+}
+
+export function updateEdgeTPUCompileUI() {
+  const allOptionPanels = document.querySelectorAll(".optionPanel .options");
+  allOptionPanels.forEach(function (panel) {
+    panel.style.display = "none";
+  });
+  
+  const edgeTPUBasicOptions = document.getElementById(
+    "optionImportEdgeTPUBasic"
+  );
+  const edgeTPUAdvancedOptions = document.getElementById(
+    "optionImportEdgeTPUAdvanced"
+  );
+  const edgeTPUMinRuntimeVersion = document.getElementById(
+    "EdgeTPUMinRuntimeVersion"
+  );
+  const edgeTPUSearchDelegate = document.getElementById(
+    "EdgeTPUSearchDelegate"
+  );
+  const edgeTPUDelegateSearchStepDiv = document.getElementById(
+    "EdgeTPUDelegateSearchStepDiv"
+  );  
+
+  const versionList = [10, 11, 12, 13, 14];
+  
+  edgeTPUBasicOptions.style.display = "none";
+  edgeTPUAdvancedOptions.style.display = "none";
+
+  if (edgeTPUMinRuntimeVersion.childElementCount !== versionList.length) {
+    versionList.forEach((version) => {
+      var option = new Option(version);
+      edgeTPUMinRuntimeVersion.append(option);
+    });
+  }
+  edgeTPUDelegateSearchStepDiv.style.display = edgeTPUSearchDelegate.checked
+    ? "block"
+    : "none";
+  edgeTPUBasicOptions.style.display = "block";
+  edgeTPUAdvancedOptions.style.display = "block";
 }

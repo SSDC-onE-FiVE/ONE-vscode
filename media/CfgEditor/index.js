@@ -25,7 +25,6 @@ import {
   updateImportPB,
   updateImportSAVED,
   updateImportTFLITE,
-  updateImportEdgeTPU,
   updateOptimize,
   updateProfile,
   updateQuantizeActionType,
@@ -33,8 +32,16 @@ import {
   updateQuantizeDefault,
   updateQuantizeForce,
   updateSteps,
+  updateEdgeTPUStep,
+  updateCompiler,
+  updateEdgeTPUCompile
 } from "./updateContent.js";
-import { updateImportUI, updateQuantizeUI, updateStepUI } from "./updateUI.js";
+import {
+  updateCompilerUI,
+  updateImportUI,
+  updateQuantizeUI,
+  updateStepUI,
+} from "./updateUI.js";
 import { postMessageToVsCode } from "./vscodeapi.js";
 
 // Just like a regular webpage we need to wait for the webview
@@ -44,12 +51,15 @@ window.addEventListener("load", main);
 
 // Main function that gets executed once the webview DOM loads
 function main() {
+  registerCompiler();
   registerSteps();
+  registerCompilerStep();
   registerImportOptions();
   registerOptimizeOptions();
   registerQuantizeOptions();
   registerCodegenOptions();
   registerProfileOptions();
+  registerCompileOptions();
   registerCodiconEvents();
 
   // event from vscode extension
@@ -64,6 +74,7 @@ function main() {
         break;
       case "applyDialogPath":
         document.getElementById(message.elemID).value = message.path;
+        console.log(message.step);
         switch (message.step) {
           case "ImportPB":
             updateImportPB();
@@ -80,9 +91,6 @@ function main() {
           case "ImportONNX":
             updateImportONNX();
             break;
-          case "ImportEdgeTPU":
-            updateImportEdgeTPU();
-            break;
           case "Optimize":
             updateOptimize();
             break;
@@ -94,6 +102,9 @@ function main() {
             break;
           case "QuantizeCopy":
             updateQuantizeCopy();
+            break;
+          case "EdgeTPUCompile":
+            updateEdgeTPUCompile();
             break;
           default:
             break;
@@ -157,6 +168,18 @@ function setDefaultValues(name) {
   applyUpdates();
 }
 
+function registerCompiler() {
+  const compilerSelector = document.getElementById("compilerSelector");
+  
+  updateCompilerUI();
+
+  compilerSelector.addEventListener("click", function(){
+    updateCompiler();
+    updateCompilerUI(); 
+    applyUpdates();
+  });
+}
+
 function registerSteps() {
   const checkboxImport = document.getElementById("checkboxImport");
   const checkboxOptimize = document.getElementById("checkboxOptimize");
@@ -212,6 +235,29 @@ function registerSteps() {
   });
 }
 
+function registerCompilerStep() {
+  const checkboxEdgeTPUCompile = document.getElementById("checkboxEdgeTPUCompile");
+  const checkboxEdgeTPUProfile = document.getElementById("checkboxEdgeTPUProfile");
+  const stepEdgeTPUCompile = document.getElementById("stepEdgeTPUCompile");
+  const stepEdgeTPUProfile = document.getElementById("stepEdgeTPUProfile");
+
+  checkboxEdgeTPUCompile.addEventListener("click", function () {
+    updateEdgeTPUStep();    
+    applyUpdates();
+  });
+  checkboxEdgeTPUProfile.addEventListener("click", function () {
+    updateEdgeTPUStep();    
+    applyUpdates();
+  });
+ 
+  stepEdgeTPUCompile.addEventListener("click", function () {
+    updateStepUI("EdgeTPUCompile");
+  });
+  stepEdgeTPUProfile.addEventListener("click", function () {
+    updateStepUI("EdgeTPUProfile");
+  });
+}
+
 function registerImportOptions() {
   const importInputModelType = document.getElementById("importInputModelType");
   importInputModelType.addEventListener("click", function () {
@@ -226,7 +272,6 @@ function registerImportOptions() {
   registerKERASOptions();
   registerTFLITEOptions();
   registerONNXOptions();
-  registerEdgeTPUOptions();
 }
 
 function registerPBOptions() {
@@ -336,7 +381,7 @@ function registerONNXOptions() {
   });
 }
 
-function registerEdgeTPUOptions() {
+function registerCompileOptions() {
   const edgeTPUInputPath = document.getElementById("EdgeTPUInputPath");
   const edgeTPUIntermediateTensors = document.getElementById(
     "EdgeTPUIntermediateTensorsInputArrays"
@@ -358,19 +403,20 @@ function registerEdgeTPUOptions() {
   );
 
   edgeTPUInputPath.addEventListener("input", function () {
-    updateImportEdgeTPU();
+    updateEdgeTPUCompile();
     applyUpdates();
   });
   edgeTPUIntermediateTensors.addEventListener("input", function () {
-    updateImportEdgeTPU();
+    updateEdgeTPUCompile();
     applyUpdates();
   });
   edgeTPUShowOperations.addEventListener("click", function () {
-    updateImportEdgeTPU();
+    console.log("clicked");
+    updateEdgeTPUCompile();
     applyUpdates();
   });
   edgeTPUMinRuntimeVersion.addEventListener("input", function () {
-    updateImportEdgeTPU();
+    updateEdgeTPUCompile();
     applyUpdates();
   });
   edgeTPUSearchDelegate.addEventListener("click", function () {
@@ -379,7 +425,7 @@ function registerEdgeTPUOptions() {
     } else {
       edgeTPUDelegateSearchStepDiv.style.display = "none";
     }
-    updateImportEdgeTPU();
+    updateEdgeTPUCompile();
     applyUpdates();
   });
   edgeTPUDelegateSearchStep.addEventListener("input", function () {
@@ -387,7 +433,7 @@ function registerEdgeTPUOptions() {
       edgeTPUDelegateSearchStep.value < 1
         ? "1"
         : edgeTPUDelegateSearchStep.value;
-    updateImportEdgeTPU();
+        updateEdgeTPUCompile();
     applyUpdates();
   });
 }
@@ -824,7 +870,7 @@ function registerCodiconEvents() {
         isFolder: false,
         ext: ["tflite"],
         oldPath: document.getElementById("EdgeTPUInputPath").value,
-        postStep: "ImportEdgeTPU",
+        postStep: "EdgeTPUCompile",
         postElemID: "EdgeTPUInputPath",
       });
     });

@@ -17,16 +17,18 @@
 import * as ini from "ini";
 
 const sections = [
+  "compiler",
   "onecc",
   "one-import-tf",
   "one-import-tflite",
   "one-import-bcq",
   "one-import-onnx",
-  "one-import-edgetpu",
   "one-optimize",
   "one-quantize",
   "one-codegen",
   "one-profile",
+  "edgetpu-compiler",
+  "edgetpu-compile",
 ];
 
 // NOTE: Why is not function overloadding used? Its maintain costs expensive.

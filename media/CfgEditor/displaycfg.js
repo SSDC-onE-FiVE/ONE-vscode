@@ -41,9 +41,6 @@ export function displayCfgToEditor(cfg) {
     } else if (onecc["one-import-bcq"] === "True") {
       document.getElementById("checkboxImport").checked = true;
       // TODO Enable when one-import-bcq is supported
-    } else if (onecc["one-import-edgetpu"] === "True") {
-      document.getElementById("checkboxImport").checked = true;
-      document.getElementById("importInputModelType").value = "edgetpu";
     } else {
       document.getElementById("checkboxImport").checked = false;
     }
@@ -65,8 +62,7 @@ export function displayCfgToEditor(cfg) {
     document.getElementById("checkboxQuantize").checked = false;
     document.getElementById("checkboxCodegen").checked = false;
     document.getElementById("checkboxProfile").checked = false;
-  }
-
+  } 
   const oneImportTF = cfg["one-import-tf"];
   const modelFormat = oneImportTF?.["model_format"];
   if (oneImportTF === undefined) {
@@ -141,33 +137,32 @@ export function displayCfgToEditor(cfg) {
   );
 
   // TODO Support one-import-bcq
+  updateImportUI();
 
   // TODO Support import EdgeTPU
-  const oneImportEdgeTPU = cfg["one-import-edgetpu"];
+  const edgeTPUCompiler = cfg["edgetpu-compile"];
   document.getElementById("EdgeTPUInputPath").value = cfgString(
-    oneImportEdgeTPU?.["input_path"]
+    edgeTPUCompiler?.["input_path"]
   );
   document.getElementById("EdgeTPUOutputPath").value = cfgString(
-    oneImportEdgeTPU?.["output_path"]
+    edgeTPUCompiler?.["output_path"]
   );
   document.getElementById("EdgeTPUIntermediateTensorsInputArrays").value =
-    cfgString(oneImportEdgeTPU?.["intermediate_tensors"]);
+    cfgString(edgeTPUCompiler?.["intermediate_tensors"]);
   document.getElementById("EdgeTPUShowOperations").checked = cfgBoolean(
-    oneImportEdgeTPU?.["show_operations"]
+    edgeTPUCompiler?.["show_operations"]
   );
   document.getElementById("EdgeTPUMinRuntimeVersion").value = cfgString(
-    oneImportEdgeTPU?.["min_runtime_version"],
+    edgeTPUCompiler?.["min_runtime_version"],
     "14"
   );
   document.getElementById("EdgeTPUSearchDelegate").checked = cfgBoolean(
-    oneImportEdgeTPU?.["search_delegate"]
+    edgeTPUCompiler?.["search_delegate"]
   );
   document.getElementById("EdgeTPUDelegateSearchStep").value = cfgString(
-    oneImportEdgeTPU?.["delegate_search_step"],
+    edgeTPUCompiler?.["delegate_search_step"],
     "1"
   );
-
-  updateImportUI();
 
   const oneOptimize = cfg["one-optimize"];
   document.getElementById("optimizeInputPath").value = cfgString(
