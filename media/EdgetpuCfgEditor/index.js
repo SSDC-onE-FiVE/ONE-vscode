@@ -47,7 +47,6 @@ function main() {
         break;
       case "applyDialogPath":
         document.getElementById(message.elemID).value = message.path;
-        console.log(message.step);
         switch (message.step) {          
           case "EdgeTPUCompile":
             updateEdgeTPUCompile();
@@ -85,22 +84,18 @@ function registerCompilerStep() {
   const stepEdgeTPUProfile = document.getElementById("stepEdgeTPUProfile");
 
   checkboxEdgeTPUCompile.addEventListener("click", function () {
-    console.log("compile event clicked");
     updateEdgeTPUStep();    
     applyUpdates();
   });
   checkboxEdgeTPUProfile.addEventListener("click", function () {
-    console.log("profile event clicked");
     updateEdgeTPUStep();    
     applyUpdates();
   });
   
   stepEdgeTPUCompile.addEventListener("click", function () {
-    console.log("compile step event clicked");
     updateStepUI("EdgeTPUCompile");
   });
   stepEdgeTPUProfile.addEventListener("click", function () {
-    console.log("profile step event clicked");
     updateStepUI("EdgeTPUProfile");
   });
 }
@@ -138,7 +133,6 @@ function registerCompileOptions() {
     applyUpdates();
   });
   edgeTPUShowOperations.addEventListener("click", function () {
-    console.log("clicked");
     updateEdgeTPUCompile();
     applyUpdates();
   });
