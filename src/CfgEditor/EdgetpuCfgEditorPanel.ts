@@ -50,20 +50,20 @@ import { CfgData } from "./CfgData";
 import { ICfgEditorPanel } from "./ICfgEditorPanel";
 
 /* istanbul ignore next */
-export class CfgEditorPanel implements ICfgEditorPanel {
+export class EdgetpuCfgEditorPanel implements ICfgEditorPanel {
   private _disposables: vscode.Disposable[] = [];
   private _oneConfigMap: any = {};
   private _activeDocument: vscode.TextDocument | undefined;
   private _activeWebviewPanel: vscode.WebviewPanel | undefined;
 
-  public static readonly viewType = "one.editor.cfg";
+  public static readonly viewType = "one.editor.edgetpucfg";
 
   public static register(context: vscode.ExtensionContext): void {
-    const provider = new CfgEditorPanel(context);
+    const provider = new EdgetpuCfgEditorPanel(context);
 
     const registrations = [
       vscode.window.registerCustomEditorProvider(
-        CfgEditorPanel.viewType,
+        EdgetpuCfgEditorPanel.viewType,
         provider,
         {
           webviewOptions: {
@@ -133,17 +133,19 @@ export class CfgEditorPanel implements ICfgEditorPanel {
 
     const jsUri = getUri(webview, this.context.extensionUri, [
       "media",
-      "CfgEditor",
+      "EdgetpuCfgEditor",
       "index.js",
     ]);
+
     const cssUri = getUri(webview, this.context.extensionUri, [
       "media",
-      "CfgEditor",
+      "EdgetpuCfgEditor",
       "cfgeditor.css",
     ]);
+
     const htmlUri = vscode.Uri.joinPath(
       this.context.extensionUri,
-      "media/CfgEditor/cfgeditor.html"
+      "media/EdgetpuCfgEditor/cfgeditor.html"
     );
 
     let html = Buffer.from(
@@ -225,7 +227,7 @@ export class CfgEditorPanel implements ICfgEditorPanel {
     document: vscode.TextDocument,
     webviewPanel: vscode.WebviewPanel
   ): void {
-    vscode.commands.executeCommand("setContext", CfgEditorPanel.viewType, true);
+    vscode.commands.executeCommand("setContext", EdgetpuCfgEditorPanel.viewType, true);
 
     const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(
       (e) => {
@@ -250,7 +252,7 @@ export class CfgEditorPanel implements ICfgEditorPanel {
         }
         vscode.commands.executeCommand(
           "setContext",
-          CfgEditorPanel.viewType,
+          EdgetpuCfgEditorPanel.viewType,
           webviewPanel.visible
         );
       },
@@ -268,13 +270,16 @@ export class CfgEditorPanel implements ICfgEditorPanel {
       }
       vscode.commands.executeCommand(
         "setContext",
-        CfgEditorPanel.viewType,
+        EdgetpuCfgEditorPanel.viewType,
         false
       );
     });
   }
 
-  updateWebview(document: vscode.TextDocument, webview: vscode.Webview): void {
+  updateWebview(
+    document: vscode.TextDocument,
+    webview: vscode.Webview
+  ): void {
     this._oneConfigMap[document.uri.toString()].setWithString(
       document.getText()
     );
