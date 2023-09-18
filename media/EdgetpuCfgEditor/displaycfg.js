@@ -27,10 +27,6 @@ export function displayCfgToEditor(cfg) {
   document.getElementById("EdgeTPUShowOperations").checked = cfgBoolean(
     edgeTPUCompiler?.["show_operations"]
   );
-  document.getElementById("EdgeTPUMinRuntimeVersion").value = cfgString(
-    edgeTPUCompiler?.["min_runtime_version"],
-    "14"
-  );
   document.getElementById("EdgeTPUSearchDelegate").checked = cfgBoolean(
     edgeTPUCompiler?.["search_delegate"]
   );

@@ -108,9 +108,6 @@ function registerCompileOptions() {
   const edgeTPUShowOperations = document.getElementById(
     "EdgeTPUShowOperations"
   );
-  const edgeTPUMinRuntimeVersion = document.getElementById(
-    "EdgeTPUMinRuntimeVersion"
-  );
   const edgeTPUSearchDelegate = document.getElementById(
     "EdgeTPUSearchDelegate"
   );
@@ -133,10 +130,6 @@ function registerCompileOptions() {
     applyUpdates();
   });
   edgeTPUShowOperations.addEventListener("click", function () {
-    updateEdgeTPUCompile();
-    applyUpdates();
-  });
-  edgeTPUMinRuntimeVersion.addEventListener("input", function () {
     updateEdgeTPUCompile();
     applyUpdates();
   });

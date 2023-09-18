@@ -98,11 +98,6 @@ export function updateEdgeTPUCompile() {
     document.getElementById("EdgeTPUShowOperations").checked
   );
   content += iniKeyValueString(
-    "min_runtime_version",
-    document.getElementById("EdgeTPUMinRuntimeVersion").value,
-    "14"
-  );
-  content += iniKeyValueString(
     "search_delegate",
     document.getElementById("EdgeTPUSearchDelegate").checked
   );
