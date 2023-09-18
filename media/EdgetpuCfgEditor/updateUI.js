@@ -53,7 +53,7 @@ export function updateEdgeTPUCompileUI() {
 
   edgeTPUBasicOptions.style.display = "none";
   edgeTPUAdvancedOptions.style.display = "none";
-  
+
   edgeTPUDelegateSearchStepDiv.style.display = edgeTPUSearchDelegate.checked
     ? "block"
     : "none";
