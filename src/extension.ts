@@ -18,6 +18,7 @@ import * as vscode from "vscode";
 
 import { backendRegistrationApi } from "./Backend/API";
 import { CfgEditorPanel } from "./CfgEditor/CfgEditorPanel";
+import { EdgetpuCfgEditorPanel } from "./CfgEditor/EdgetpuCfgEditorPanel";
 import { CircleEditorProvider } from "./CircleEditor/CircleEditorProvider";
 import { CircleViewerProvider } from "./CircleGraph/CircleViewer";
 import { DeviceViewProvider } from "./Execute/DeviceViewProvider";
@@ -63,6 +64,8 @@ export function activate(context: vscode.ExtensionContext) {
   DeviceViewProvider.register(context);
 
   CfgEditorPanel.register(context);
+
+  EdgetpuCfgEditorPanel.register(context);
 
   JsonTracerViewerPanel.register(context);
 

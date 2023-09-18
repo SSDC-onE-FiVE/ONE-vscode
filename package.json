@@ -60,6 +60,16 @@
         "priority": "option"
       },
       {
+        "viewType": "one.editor.edgetpucfg",
+        "displayName": "Edgetpu Cfg Editor",
+        "selector": [
+          {
+            "filenamePattern": "*.edgetpucfg"
+          }
+        ],
+        "priority": "option"
+      },
+      {
         "viewType": "one.viewer.mondrian",
         "displayName": "Mondrian",
         "selector": [
