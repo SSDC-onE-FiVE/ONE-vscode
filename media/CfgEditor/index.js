@@ -32,16 +32,8 @@ import {
   updateQuantizeDefault,
   updateQuantizeForce,
   updateSteps,
-  updateEdgeTPUStep,
-  updateCompiler,
-  updateEdgeTPUCompile
 } from "./updateContent.js";
-import {
-  updateCompilerUI,
-  updateImportUI,
-  updateQuantizeUI,
-  updateStepUI,
-} from "./updateUI.js";
+import { updateImportUI, updateQuantizeUI, updateStepUI } from "./updateUI.js";
 import { postMessageToVsCode } from "./vscodeapi.js";
 
 // Just like a regular webpage we need to wait for the webview
@@ -51,15 +43,12 @@ window.addEventListener("load", main);
 
 // Main function that gets executed once the webview DOM loads
 function main() {
-  registerCompiler();
   registerSteps();
-  registerCompilerStep();
   registerImportOptions();
   registerOptimizeOptions();
   registerQuantizeOptions();
   registerCodegenOptions();
   registerProfileOptions();
-  registerCompileOptions();
   registerCodiconEvents();
 
   // event from vscode extension
@@ -74,7 +63,6 @@ function main() {
         break;
       case "applyDialogPath":
         document.getElementById(message.elemID).value = message.path;
-        console.log(message.step);
         switch (message.step) {
           case "ImportPB":
             updateImportPB();
@@ -102,9 +90,6 @@ function main() {
             break;
           case "QuantizeCopy":
             updateQuantizeCopy();
-            break;
-          case "EdgeTPUCompile":
-            updateEdgeTPUCompile();
             break;
           default:
             break;
@@ -168,18 +153,6 @@ function setDefaultValues(name) {
   applyUpdates();
 }
 
-function registerCompiler() {
-  const compilerSelector = document.getElementById("compilerSelector");
-  
-  updateCompilerUI();
-
-  compilerSelector.addEventListener("click", function(){
-    updateCompiler();
-    updateCompilerUI(); 
-    applyUpdates();
-  });
-}
-
 function registerSteps() {
   const checkboxImport = document.getElementById("checkboxImport");
   const checkboxOptimize = document.getElementById("checkboxOptimize");
@@ -232,29 +205,6 @@ function registerSteps() {
   });
   stepProfile.addEventListener("click", function () {
     updateStepUI("Profile");
-  });
-}
-
-function registerCompilerStep() {
-  const checkboxEdgeTPUCompile = document.getElementById("checkboxEdgeTPUCompile");
-  const checkboxEdgeTPUProfile = document.getElementById("checkboxEdgeTPUProfile");
-  const stepEdgeTPUCompile = document.getElementById("stepEdgeTPUCompile");
-  const stepEdgeTPUProfile = document.getElementById("stepEdgeTPUProfile");
-
-  checkboxEdgeTPUCompile.addEventListener("click", function () {
-    updateEdgeTPUStep();    
-    applyUpdates();
-  });
-  checkboxEdgeTPUProfile.addEventListener("click", function () {
-    updateEdgeTPUStep();    
-    applyUpdates();
-  });
- 
-  stepEdgeTPUCompile.addEventListener("click", function () {
-    updateStepUI("EdgeTPUCompile");
-  });
-  stepEdgeTPUProfile.addEventListener("click", function () {
-    updateStepUI("EdgeTPUProfile");
   });
 }
 
@@ -377,67 +327,6 @@ function registerONNXOptions() {
   });
   onnxUnrollLSTM.addEventListener("click", function () {
     updateImportONNX();
-    applyUpdates();
-  });
-}
-
-function registerCompileOptions() {
-  const edgeTPUInputPath = document.getElementById("EdgeTPUInputPath");
-  const edgeTPUIntermediateTensors = document.getElementById(
-    "EdgeTPUIntermediateTensorsInputArrays"
-  );
-  const edgeTPUShowOperations = document.getElementById(
-    "EdgeTPUShowOperations"
-  );
-  const edgeTPUMinRuntimeVersion = document.getElementById(
-    "EdgeTPUMinRuntimeVersion"
-  );
-  const edgeTPUSearchDelegate = document.getElementById(
-    "EdgeTPUSearchDelegate"
-  );
-  const edgeTPUDelegateSearchStep = document.getElementById(
-    "EdgeTPUDelegateSearchStep"
-  );
-  const edgeTPUDelegateSearchStepDiv = document.getElementById(
-    "EdgeTPUDelegateSearchStepDiv"
-  );
-
-  edgeTPUInputPath.addEventListener("input", function () {
-    updateEdgeTPUCompile();
-    applyUpdates();
-  });
-  edgeTPUIntermediateTensors.addEventListener("input", function () {
-    if (edgeTPUSearchDelegate.checked) {
-      edgeTPUSearchDelegate.checked = false;
-    }
-    updateEdgeTPUCompile();
-    applyUpdates();
-  });
-  edgeTPUShowOperations.addEventListener("click", function () {
-    console.log("clicked");
-    updateEdgeTPUCompile();
-    applyUpdates();
-  });
-  edgeTPUMinRuntimeVersion.addEventListener("input", function () {
-    updateEdgeTPUCompile();
-    applyUpdates();
-  });
-  edgeTPUSearchDelegate.addEventListener("click", function () {
-    if (edgeTPUSearchDelegate.checked) {
-      edgeTPUIntermediateTensors.value = "";
-      edgeTPUDelegateSearchStepDiv.style.display = "block";
-    } else {
-      edgeTPUDelegateSearchStepDiv.style.display = "none";
-    }
-    updateEdgeTPUCompile();
-    applyUpdates();
-  });
-  edgeTPUDelegateSearchStep.addEventListener("input", function () {
-    edgeTPUDelegateSearchStep.value =
-      edgeTPUDelegateSearchStep.value < 1
-        ? "1"
-        : edgeTPUDelegateSearchStep.value;
-        updateEdgeTPUCompile();
     applyUpdates();
   });
 }
@@ -864,18 +753,6 @@ function registerCodiconEvents() {
         oldPath: document.getElementById("CopyQuantOutputPath").value,
         postStep: "QuantizeCopy",
         postElemID: "CopyQuantOutputPath",
-      });
-    });
-  document
-    .getElementById("EdgeTPUInputPathSearch")
-    .addEventListener("click", function () {
-      postMessageToVsCode({
-        type: "getPathByDialog",
-        isFolder: false,
-        ext: ["tflite"],
-        oldPath: document.getElementById("EdgeTPUInputPath").value,
-        postStep: "EdgeTPUCompile",
-        postElemID: "EdgeTPUInputPath",
       });
     });
 }
