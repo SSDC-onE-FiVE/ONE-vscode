@@ -27,6 +27,27 @@ export type EdgeTpuCfg = {
 // type CfgOneImportTf = any;
 
 export class EdgeTpuConfigSetting extends ConfigSetting {
+  constructor() {
+    super();
+    this.ext = ".edgetpucfg";
+    this.sections = {
+      ".tflite": "edgetpu-compile",
+    };
+  }
+
+  public updateOutPath(
+    newpath: string,
+    rawObj: { [key: string]: any },
+    kSection: string
+  ): void {
+    const ext = ".tflite";
+    let outpath = newpath.slice(0, -ext.length);
+    outpath += "_edgetpu" + ext;
+    if (rawObj[kSection]) {
+      rawObj[kSection].output_path = outpath;
+    }
+  }
+
   protected _initBaseModelsLocatorRunner() {
     let locatorRunner = new LocatorRunner();
 

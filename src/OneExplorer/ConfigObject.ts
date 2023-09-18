@@ -162,11 +162,7 @@ export class ConfigObj {
   ): Thenable<void> {
     const getSection = (name: string) => {
       const ext = path.extname(name);
-      const sections = {
-        ".pb": "one-import-tf",
-        ".tflite": "one-import-tflite",
-        ".onnx": "one-import-onnx",
-      };
+      const sections = this.getConfigSetting.sections;
 
       return sections[ext as keyof typeof sections];
     };
@@ -175,6 +171,7 @@ export class ConfigObj {
     const kSection: CfgKeys = section as keyof Cfg;
 
     if (
+      this.rawObj[kSection] &&
       this.rawObj[kSection].input_path &&
       this.getFullPath(this.rawObj[kSection].input_path) === oldpath
     ) {
@@ -185,6 +182,8 @@ export class ConfigObj {
         `Cannot update base model field: ${oldpath} not found`
       );
     }
+
+    this.getConfigSetting.updateOutPath(newpath, this.rawObj, kSection);
 
     return vscode.workspace.fs.writeFile(
       this.uri,

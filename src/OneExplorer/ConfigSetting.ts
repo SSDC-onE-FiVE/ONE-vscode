@@ -22,7 +22,42 @@ import { Artifact, LocatorRunner } from "./ArtifactLocator";
 export abstract class ConfigSetting {
   baseModelsLocatorRunner: LocatorRunner;
   productsLocatorRunner: LocatorRunner;
-  // TODO: make sections for updateBaseModelField method
+  ext: string;
+  sections: { [key: string]: string };
+
+  constructor() {
+    this.baseModelsLocatorRunner = new LocatorRunner();
+    this.productsLocatorRunner = new LocatorRunner();
+    this.ext = ".cfg";
+    this.sections = {
+      ".pb": "one-import-tf",
+      ".tflite": "one-import-tflite",
+      ".onnx": "one-import-onnx",
+    };
+  }
+
+  public init(): void {
+    this._initBaseModelsLocatorRunner();
+    this._initProductsLocatorRunner();
+  }
+
+  /**
+   * @brief A function for cases where output_path changes based on input_path
+   *
+   * @param newpath new input_path
+   * @param rawObj raw config object
+   * @param kSection key section to be updated
+   *
+   * Using onecc, this function do nothing.
+   * Using EdgeTpu compiler, output_path is determined by input_path
+   *    ex) input_path=model.tflite
+   *        output_path=model_edgetpu.tflite
+   */
+  public abstract updateOutPath(
+    newpath?: string,
+    rawObj?: { [key: string]: any },
+    kSection?: string
+  ): void;
 
   /**
    * @brief Parse base models written in the ini object and return the absolute path.
@@ -88,16 +123,6 @@ export abstract class ConfigSetting {
 
     return artifacts;
   };
-
-  constructor() {
-    this.baseModelsLocatorRunner = new LocatorRunner();
-    this.productsLocatorRunner = new LocatorRunner();
-  }
-
-  public init(): void {
-    this._initBaseModelsLocatorRunner();
-    this._initProductsLocatorRunner();
-  }
 
   protected abstract _initBaseModelsLocatorRunner(): void;
   protected abstract _initProductsLocatorRunner(): void;

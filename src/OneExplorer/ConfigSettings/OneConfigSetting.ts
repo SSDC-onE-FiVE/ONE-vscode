@@ -29,7 +29,9 @@ type CfgOneImportOnnx = any;
 type CfgOneImportTf = any;
 
 export class OneConfigSetting extends ConfigSetting {
-  // TODO: make sections for updateBaseModelField method
+  public updateOutPath(): void {
+    return;
+  }
 
   protected _initBaseModelsLocatorRunner() {
     let locatorRunner = new LocatorRunner();
