@@ -25,21 +25,20 @@ import { Logger } from "../Utils/Logger";
 
 import { Artifact } from "./ArtifactLocator";
 import { ConfigSetting } from "./ConfigSetting";
-import { OneConfigSetting } from "./ConfigSettings/OneConfigSetting";
-import { EdgeTpuConfigSetting } from "./ConfigSettings/EdgeTpuConfigSetting";
+import { OneCfg, OneConfigSetting } from "./ConfigSettings/OneConfigSetting";
+import {
+  EdgeTpuCfg,
+  EdgeTpuConfigSetting,
+} from "./ConfigSettings/EdgeTpuConfigSetting";
 import { BackendContext } from "../Backend/API";
 
-type Cfg = {
-  "one-import-tflite": CfgOneImportTflite;
-  "one-import-onnx": CfgOneImportOnnx;
-  "one-import-tf": CfgOneImportTf;
-};
+type Cfg = OneCfg & EdgeTpuCfg;
 type CfgKeys = keyof Cfg;
 
 // TODO Update
-type CfgOneImportTflite = any;
-type CfgOneImportOnnx = any;
-type CfgOneImportTf = any;
+// type CfgOneImportTflite = any;
+// type CfgOneImportOnnx = any;
+// type CfgOneImportTf = any;
 
 type CfgType = {
   default: any;
@@ -127,6 +126,19 @@ export class ConfigObj {
     return found ? true : false;
   }
 
+  /**
+   * @brief getter for config setting
+   */
+  public get getConfigSetting(): ConfigSetting {
+    let configSetting: ConfigSetting = new OneConfigSetting();
+    if (this.configType === "edge-tpu") {
+      configSetting = new EdgeTpuConfigSetting();
+    }
+    configSetting.init();
+
+    return configSetting;
+  }
+
   private constructor(uri: vscode.Uri, rawObj: Cfg) {
     this.uri = uri;
     this.rawObj = rawObj;
@@ -137,11 +149,7 @@ export class ConfigObj {
     }
 
     // separate to init()
-    let configSetting: ConfigSetting = new OneConfigSetting();
-    if (this.configType === "edge-tpu") {
-      configSetting = new EdgeTpuConfigSetting();
-    }
-    configSetting.init();
+    const configSetting = this.getConfigSetting;
     this.obj = {
       baseModels: configSetting.parseBaseModels(uri.fsPath, rawObj),
       products: configSetting.parseProducts(uri.fsPath, rawObj),

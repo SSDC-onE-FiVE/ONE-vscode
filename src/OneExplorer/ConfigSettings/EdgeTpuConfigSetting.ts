@@ -19,11 +19,9 @@ import * as vscode from "vscode";
 import { Locator, LocatorRunner } from "../ArtifactLocator";
 import { ConfigSetting } from "../ConfigSetting";
 
-// export type OneCfg = {
-//   "one-import-tflite": CfgOneImportTflite;
-//   "one-import-onnx": CfgOneImportOnnx;
-//   "one-import-tf": CfgOneImportTf;
-// };
+export type EdgeTpuCfg = {
+  "edgetpu-compile": any;
+};
 // type CfgOneImportTflite = any;
 // type CfgOneImportOnnx = any;
 // type CfgOneImportTf = any;
