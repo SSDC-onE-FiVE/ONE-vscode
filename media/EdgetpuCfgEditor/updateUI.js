@@ -44,9 +44,6 @@ export function updateEdgeTPUCompileUI() {
   const edgeTPUAdvancedOptions = document.getElementById(
     "optionImportEdgeTPUAdvanced"
   );
-  const edgeTPUMinRuntimeVersion = document.getElementById(
-    "EdgeTPUMinRuntimeVersion"
-  );
   const edgeTPUSearchDelegate = document.getElementById(
     "EdgeTPUSearchDelegate"
   );
@@ -54,17 +51,9 @@ export function updateEdgeTPUCompileUI() {
     "EdgeTPUDelegateSearchStepDiv"
   );
 
-  const versionList = [10, 11, 12, 13, 14];
-
   edgeTPUBasicOptions.style.display = "none";
   edgeTPUAdvancedOptions.style.display = "none";
 
-  if (edgeTPUMinRuntimeVersion.childElementCount !== versionList.length) {
-    versionList.forEach((version) => {
-      var option = new Option(version);
-      edgeTPUMinRuntimeVersion.append(option);
-    });
-  }
   edgeTPUDelegateSearchStepDiv.style.display = edgeTPUSearchDelegate.checked
     ? "block"
     : "none";
