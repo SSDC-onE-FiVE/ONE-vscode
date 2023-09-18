@@ -23,6 +23,18 @@ export function updateStepUI(step) {
   const optionPanel = document.getElementById("option" + step);
   optionPanel.style.display = "block";
 
+  const edgeTPUSearchDelegate = document.getElementById("EdgeTPUSearchDelegate");
+  const edgeTPUDelegateSearchStepDiv = document.getElementById("EdgeTPUDelegateSearchStepDiv");
+  const edgeTPUIntermediateTensors = document.getElementById("EdgeTPUIntermediateTensors");
+  
+  if (edgeTPUSearchDelegate.checked) {
+    edgeTPUIntermediateTensors.value = "";
+    edgeTPUDelegateSearchStepDiv.style.display = "block";
+  } else {
+    edgeTPUDelegateSearchStepDiv.style.display = "none";
+  }
+
+
   const allSteps = document.querySelectorAll(".statusbar .steps .step");
   allSteps.forEach(function (step) {
     step.classList.remove("current");
@@ -32,42 +44,45 @@ export function updateStepUI(step) {
   stepbar.classList.add("current");
 }
 
-export function updateEdgeTPUCompileUI() {
-  const allOptionPanels = document.querySelectorAll(".optionPanel .options");
-  allOptionPanels.forEach(function (panel) {
-    panel.style.display = "none";
-  });
+// export function updateEdgeTPUCompileUI() {
+//   const allOptionPanels = document.querySelectorAll(".optionPanel .options");
+//   allOptionPanels.forEach(function (panel) {
+//     panel.style.display = "none";
+//   });
 
-  const edgeTPUBasicOptions = document.getElementById(
-    "optionImportEdgeTPUBasic"
-  );
-  const edgeTPUAdvancedOptions = document.getElementById(
-    "optionImportEdgeTPUAdvanced"
-  );
-  const edgeTPUMinRuntimeVersion = document.getElementById(
-    "EdgeTPUMinRuntimeVersion"
-  );
-  const edgeTPUSearchDelegate = document.getElementById(
-    "EdgeTPUSearchDelegate"
-  );
-  const edgeTPUDelegateSearchStepDiv = document.getElementById(
-    "EdgeTPUDelegateSearchStepDiv"
-  );
+//   const edgeTPUBasicOptions = document.getElementById(
+//     "optionImportEdgeTPUBasic"
+//   );
+//   const edgeTPUAdvancedOptions = document.getElementById(
+//     "optionImportEdgeTPUAdvanced"
+//   );
+//   const edgeTPUMinRuntimeVersion = document.getElementById(
+//     "EdgeTPUMinRuntimeVersion"
+//   );
+//   const edgeTPUSearchDelegate = document.getElementById(
+//     "EdgeTPUSearchDelegate"
+//   );
+//   const edgeTPUDelegateSearchStepDiv = document.getElementById(
+//     "EdgeTPUDelegateSearchStepDiv"
+//   );
 
-  const versionList = [10, 11, 12, 13, 14];
+//   const versionList = [10, 11, 12, 13, 14];
 
-  edgeTPUBasicOptions.style.display = "none";
-  edgeTPUAdvancedOptions.style.display = "none";
+//   edgeTPUBasicOptions.style.display = "none";
+//   edgeTPUAdvancedOptions.style.display = "none";
 
-  if (edgeTPUMinRuntimeVersion.childElementCount !== versionList.length) {
-    versionList.forEach((version) => {
-      var option = new Option(version);
-      edgeTPUMinRuntimeVersion.append(option);
-    });
-  }
-  edgeTPUDelegateSearchStepDiv.style.display = edgeTPUSearchDelegate.checked
-    ? "block"
-    : "none";
-  edgeTPUBasicOptions.style.display = "block";
-  edgeTPUAdvancedOptions.style.display = "block";
-}
+//   if (edgeTPUMinRuntimeVersion.childElementCount !== versionList.length) {
+//     versionList.forEach((version) => {
+//       var option = new Option(version);
+//       edgeTPUMinRuntimeVersion.append(option);
+//     });
+//   }
+
+//   edgeTPUDelegateSearchStepDiv.style.display = "none";
+
+//   edgeTPUDelegateSearchStepDiv.style.display = edgeTPUSearchDelegate.checked
+//     ? "block"
+//     : "none";
+//   edgeTPUBasicOptions.style.display = "block";
+//   edgeTPUAdvancedOptions.style.display = "block";
+// }
