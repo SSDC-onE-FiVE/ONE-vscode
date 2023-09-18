@@ -62,7 +62,8 @@ export function displayCfgToEditor(cfg) {
     document.getElementById("checkboxQuantize").checked = false;
     document.getElementById("checkboxCodegen").checked = false;
     document.getElementById("checkboxProfile").checked = false;
-  } 
+  }
+
   const oneImportTF = cfg["one-import-tf"];
   const modelFormat = oneImportTF?.["model_format"];
   if (oneImportTF === undefined) {
@@ -137,32 +138,8 @@ export function displayCfgToEditor(cfg) {
   );
 
   // TODO Support one-import-bcq
-  updateImportUI();
 
-  // TODO Support import EdgeTPU
-  const edgeTPUCompiler = cfg["edgetpu-compile"];
-  document.getElementById("EdgeTPUInputPath").value = cfgString(
-    edgeTPUCompiler?.["input_path"]
-  );
-  document.getElementById("EdgeTPUOutputPath").value = cfgString(
-    edgeTPUCompiler?.["output_path"]
-  );
-  document.getElementById("EdgeTPUIntermediateTensorsInputArrays").value =
-    cfgString(edgeTPUCompiler?.["intermediate_tensors"]);
-  document.getElementById("EdgeTPUShowOperations").checked = cfgBoolean(
-    edgeTPUCompiler?.["show_operations"]
-  );
-  document.getElementById("EdgeTPUMinRuntimeVersion").value = cfgString(
-    edgeTPUCompiler?.["min_runtime_version"],
-    "14"
-  );
-  document.getElementById("EdgeTPUSearchDelegate").checked = cfgBoolean(
-    edgeTPUCompiler?.["search_delegate"]
-  );
-  document.getElementById("EdgeTPUDelegateSearchStep").value = cfgString(
-    edgeTPUCompiler?.["delegate_search_step"],
-    "1"
-  );
+  updateImportUI();
 
   const oneOptimize = cfg["one-optimize"];
   document.getElementById("optimizeInputPath").value = cfgString(

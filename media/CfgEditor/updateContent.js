@@ -40,42 +40,6 @@ export function applyUpdates() {
   postMessageToVsCode({ type: "updateDocument" });
 }
 
-export function updateCompiler(){
-  postMessageToVsCode({
-    type: "setParam",
-    section: "compiler",
-    param: "onecc",
-    value: "False",
-  });
-  postMessageToVsCode({
-    type: "setParam",
-    section: "compiler",
-    param: "edgetpu-compiler",
-    value: "False",
-  });
-
-    switch (document.getElementById("compilerSelector").value){
-      case "ONEcc" :
-        postMessageToVsCode({
-          type: "setParam",
-          section: "compiler",
-          param: "edgetpu-compiler",
-          value: "True"
-        });
-        break;
-      case "EdgeTPU" :
-        postMessageToVsCode({
-          type: "setParam",
-          section: "compiler",
-          param: "onecc",
-          value: "True"
-        });
-       break;        
-      default:
-        break;
-    }
-}
-
 export function updateSteps() {
   postMessageToVsCode({
     type: "setParam",
@@ -165,26 +129,7 @@ export function updateSteps() {
     value: document.getElementById("checkboxProfile").checked
       ? "True"
       : "False",
-  }); 
-}
-
-export function updateEdgeTPUStep(){
-  postMessageToVsCode({
-    type: "setParam",
-    section: "edgetpu-compiler",
-    param: "edgetpu-compile",
-    value: document.getElementById("checkboxEdgeTPUCompile").checked
-    ? "True"
-    : "False",
-  }); 
-  postMessageToVsCode({
-    type: "setParam",
-    section: "edgetpu-compiler",
-    param: "edgetpu-profile",
-    value: document.getElementById("checkboxEdgeTPUProfile").checked
-    ? "True"
-    : "False",
-  }); 
+  });
 }
 
 export function updateImportInputModelType() {
@@ -329,70 +274,6 @@ export function updateImportONNX() {
   });
 }
 
-function addPostfixToFileName(filePath = "", postfix = "") {
-  if (filePath.trim() === "") {
-    return "";
-  }
-  const parts = filePath.split(".");
-  let newFilePath = "";
-  if (parts.length < 2) {
-    newFilePath = `${filePath}${postfix}`;
-  } else {
-    const fileName = parts.slice(0, -1).join(".");
-    const fileExtension = parts[parts.length - 1];
-    const newFileName = `${fileName}${postfix}`;
-    newFilePath = `${newFileName}.${fileExtension}`;
-  }
-
-  return newFilePath;
-}
-
-export function updateEdgeTPUCompile() {
-  let content = "";
-  content += iniKeyValueString(
-    "input_path",
-    document.getElementById("EdgeTPUInputPath").value
-  );
-  content += iniKeyValueString(
-    "output_path",
-    addPostfixToFileName(
-      document.getElementById("EdgeTPUInputPath").value,
-      "_edgetpu"
-    )
-  );
-  content += iniKeyValueString(
-    "intermediate_tensors",
-    document.getElementById("EdgeTPUIntermediateTensorsInputArrays").value
-  );
-  content += iniKeyValueString(
-    "show_operations",
-    document.getElementById("EdgeTPUShowOperations").checked
-  );
-  content += iniKeyValueString(
-    "min_runtime_version",
-    document.getElementById("EdgeTPUMinRuntimeVersion").value,
-    "14"
-  );
-  content += iniKeyValueString(
-    "search_delegate",
-    document.getElementById("EdgeTPUSearchDelegate").checked
-  );
-  content += iniKeyValueString(
-    "delegate_search_step",
-    document.getElementById("EdgeTPUSearchDelegate").checked
-      ? document.getElementById("EdgeTPUDelegateSearchStep").value < 1
-        ? "1"
-        : document.getElementById("EdgeTPUDelegateSearchStep").value
-      : undefined
-  );
-
-  postMessageToVsCode({
-    type: "setSection",
-    section: "edgetpu-compile",
-    param: content,
-  });
-}
-
 export function updateOptimize() {
   let content = "";
   content += iniKeyValueString(
@@ -417,7 +298,6 @@ export function updateOptimize() {
     param: content,
   });
 }
-
 
 export function updateQuantizeActionType() {
   switch (document.getElementById("quantizeActionType").value) {
