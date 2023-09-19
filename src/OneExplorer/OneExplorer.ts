@@ -25,6 +25,8 @@ import { Logger } from "../Utils/Logger";
 
 import { ArtifactAttr } from "./ArtifactLocator";
 import { OneStorage } from "./OneStorage";
+import { DefaultToolchain } from "../Toolchain/DefaultToolchain";
+import { BackendContext } from "../Backend/API";
 
 // Exported for unit testing only
 export {
@@ -195,7 +197,16 @@ class NodeFactory {
           undefined,
           "Config nodes cannot have attributes"
         );
-        node = new ConfigNode(uri, parent);
+        const ext = path.extname(fpath);
+        switch(ext){
+          case ".edgetpucfg":{
+            node = new ConfigNode(uri, parent,"one.editor.edgetpucfg");
+            break;
+          }
+          default :{
+            node = new ConfigNode(uri, parent);   
+          }
+        }
         break;
       }
       case NodeType.product: {
@@ -237,6 +248,40 @@ class DirectoryNode extends Node {
   }
 
   /**
+   * Check tflite file is compiled with Edge TPU Compiler
+   *
+   * To exclude Edge TPU compiled tflite file from baseModel
+   * Now check with postfix of Edge TPU Compiler's default file name
+   */
+
+  private isToolchainOne(fname:string):boolean{
+    return fname.endsWith(".pb") || (fname.endsWith(".tflite")&& !fname.endsWith("_edgetpu.tflite"))||fname.endsWith(".onnx");
+  }
+
+  private isToolchainEdgeTPU(fname: string): boolean {
+    return BackendContext.isRegistered("EdgeTPU") && fname.endsWith(".tflite") && !fname.endsWith("_edgetpu.tflite");
+  }
+
+  /*
+  Check if the file is a basemodel.
+  The type to check depending on the default toolchain.
+  */
+  private checkBaseModel(fname : string) : boolean{
+    let defaultToolchain = DefaultToolchain.getInstance().getToolchain()?.info.name;
+    if(!defaultToolchain) defaultToolchain = "onecc-docker";
+    switch(defaultToolchain){
+      case"onecc-docker":{
+        return this.isToolchainOne(fname);
+      }
+      case "edgetpu-compiler":{
+        return this.isToolchainEdgeTPU(fname);
+      }
+      default: {
+        throw Error("Unkown Toolchain");
+      }
+    }
+  }
+  /**
    * Build a sub-tree under the node
    *
    * directory          <- this
@@ -255,15 +300,11 @@ class DirectoryNode extends Node {
 
       if (fstat.isDirectory()) {
         const dirNode = NodeFactory.create(NodeType.directory, fpath, this);
-
         if (dirNode && dirNode.getChildren().length > 0) {
           this._childNodes!.push(dirNode);
         }
       } else if (
-        fstat.isFile() &&
-        (fname.endsWith(".pb") ||
-          fname.endsWith(".tflite") ||
-          fname.endsWith(".onnx"))
+        fstat.isFile() && this.checkBaseModel(fname)
       ) {
         const baseModelNode = NodeFactory.create(
           NodeType.baseModel,
@@ -339,7 +380,7 @@ class BaseModelNode extends Node {
 class ConfigNode extends Node {
   readonly type = NodeType.config;
 
-  static readonly extList = [".cfg"];
+  static readonly extList = [".cfg", ".edgetpucfg"];
   // Open file with one.editor.cfg as default
   static defaultOpenViewType = "one.editor.cfg";
   // Display gear icon as default
@@ -412,6 +453,8 @@ class ProductNode extends Node {
     ".tv2o",
     ".json",
     ".circle.log",
+    ".tflite",
+    ".log",
   ];
   // Do not open file as default
   static defaultOpenViewType = undefined;
