@@ -15,6 +15,7 @@
  */
 
 import * as vscode from "vscode";
+import * as path from "path";
 
 import { Locator, LocatorRunner } from "../ArtifactLocator";
 import { ConfigSetting } from "../ConfigSetting";
@@ -40,9 +41,10 @@ export class EdgeTpuConfigSetting extends ConfigSetting {
     rawObj: { [key: string]: any },
     kSection: string
   ): void {
-    const ext = ".tflite";
-    let outpath = newpath.slice(0, -ext.length);
-    outpath += "_edgetpu" + ext;
+    const ext = path.extname(newpath);
+    const name = path.basename(newpath, ext) + "_edgetpu" + ext;
+    const dir = path.dirname(newpath);
+    const outpath = path.join(dir, name);
     if (rawObj[kSection]) {
       rawObj[kSection].output_path = outpath;
     }

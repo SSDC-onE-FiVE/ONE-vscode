@@ -130,9 +130,16 @@ export class ConfigObj {
    * @brief getter for config setting
    */
   public get getConfigSetting(): ConfigSetting {
-    let configSetting: ConfigSetting = new OneConfigSetting();
-    if (this.configType === "edge-tpu") {
-      configSetting = new EdgeTpuConfigSetting();
+    let configSetting: ConfigSetting;
+    switch (this.configType) {
+      case "edge-tpu":
+        configSetting = new EdgeTpuConfigSetting();
+        break;
+      case "one":
+        configSetting = new OneConfigSetting();
+        break;
+      default:
+        configSetting = new OneConfigSetting();
     }
     configSetting.init();
 
