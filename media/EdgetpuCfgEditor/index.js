@@ -67,7 +67,7 @@ function setDefaultEdgetpuValues(name) {
   // EdgeTPu COmpiler steps
   document.getElementById("checkboxEdgeTPUCompile").checked = true;
 
-  updateEdgeTPUStep(); 
+  updateEdgeTPUStep();
 
   // compile step
   let compiledName = name + ".tflite";
