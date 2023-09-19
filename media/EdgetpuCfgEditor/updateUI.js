@@ -23,6 +23,23 @@ export function updateStepUI(step) {
   const optionPanel = document.getElementById("option" + step);
   optionPanel.style.display = "block";
 
+  const edgeTPUSearchDelegate = document.getElementById(
+    "EdgeTPUSearchDelegate"
+  );
+  const edgeTPUDelegateSearchStepDiv = document.getElementById(
+    "EdgeTPUDelegateSearchStepDiv"
+  );
+  const edgeTPUIntermediateTensors = document.getElementById(
+    "EdgeTPUIntermediateTensors"
+  );
+
+  if (edgeTPUSearchDelegate.checked) {
+    edgeTPUIntermediateTensors.value = "";
+    edgeTPUDelegateSearchStepDiv.style.display = "block";
+  } else {
+    edgeTPUDelegateSearchStepDiv.style.display = "none";
+  }
+
   const allSteps = document.querySelectorAll(".statusbar .steps .step");
   allSteps.forEach(function (step) {
     step.classList.remove("current");
@@ -30,33 +47,4 @@ export function updateStepUI(step) {
 
   const stepbar = document.getElementById("stepbar" + step);
   stepbar.classList.add("current");
-}
-
-export function updateEdgeTPUCompileUI() {
-  const allOptionPanels = document.querySelectorAll(".optionPanel .options");
-  allOptionPanels.forEach(function (panel) {
-    panel.style.display = "none";
-  });
-
-  const edgeTPUBasicOptions = document.getElementById(
-    "optionImportEdgeTPUBasic"
-  );
-  const edgeTPUAdvancedOptions = document.getElementById(
-    "optionImportEdgeTPUAdvanced"
-  );
-  const edgeTPUSearchDelegate = document.getElementById(
-    "EdgeTPUSearchDelegate"
-  );
-  const edgeTPUDelegateSearchStepDiv = document.getElementById(
-    "EdgeTPUDelegateSearchStepDiv"
-  );
-
-  edgeTPUBasicOptions.style.display = "none";
-  edgeTPUAdvancedOptions.style.display = "none";
-
-  edgeTPUDelegateSearchStepDiv.style.display = edgeTPUSearchDelegate.checked
-    ? "block"
-    : "none";
-  edgeTPUBasicOptions.style.display = "block";
-  edgeTPUAdvancedOptions.style.display = "block";
 }
