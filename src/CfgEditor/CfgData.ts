@@ -28,8 +28,6 @@ const sections = [
   "one-quantize",
   "one-codegen",
   "one-profile",
-  "edgetpu-compiler",
-  "edgetpu-compile",
 ];
 
 // NOTE: Why is not function overloadding used? Its maintain costs expensive.
