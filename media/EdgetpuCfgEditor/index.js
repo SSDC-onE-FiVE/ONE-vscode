@@ -128,6 +128,7 @@ function registerCompileOptions() {
   edgeTPUIntermediateTensors.addEventListener("input", function () {
     if (edgeTPUSearchDelegate.checked) {
       edgeTPUSearchDelegate.checked = false;
+      edgeTPUDelegateSearchStepDiv.style.display = "none";
     }
     updateEdgeTPUCompile();
     applyUpdates();
