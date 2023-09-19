@@ -16,6 +16,7 @@
 
 import * as ini from "ini";
 import { ICfgData } from "./ICfgData";
+import { CfgEditorPanel } from "./CfgEditorPanel";
 
 const sections = [
   "compiler",
@@ -144,5 +145,18 @@ export class CfgData implements ICfgData {
       }
     });
     this.setWithConfig(sorted);
+  }
+  getViewType(): string {
+    return CfgEditorPanel.viewType;
+  }
+  getExtType(): string {
+    return ".cfg";
+  }
+  getContent(modelName: string | null, extName: string | null): string {
+    return `[onecc]
+one-import-${extName}=True
+[one-import-${extName}]
+input_path=${modelName}.${extName}
+`;
   }
 }

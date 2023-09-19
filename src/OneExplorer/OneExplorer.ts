@@ -27,6 +27,9 @@ import { ArtifactAttr } from "./ArtifactLocator";
 import { OneStorage } from "./OneStorage";
 import { DefaultToolchain } from "../Toolchain/DefaultToolchain";
 import { BackendContext } from "../Backend/API";
+import { ICfgData } from "../CfgEditor/ICfgData";
+import { CfgData } from "../CfgEditor/CfgData";
+import { EdgeTpuCfgData } from "../CfgEditor/EdgeTpuCfgData";
 
 // Exported for unit testing only
 export {
@@ -198,13 +201,13 @@ class NodeFactory {
           "Config nodes cannot have attributes"
         );
         const ext = path.extname(fpath);
-        switch(ext){
-          case ".edgetpucfg":{
-            node = new ConfigNode(uri, parent,"one.editor.edgetpucfg");
+        switch (ext) {
+          case ".edgetpucfg": {
+            node = new ConfigNode(uri, parent, "one.editor.edgetpucfg");
             break;
           }
-          default :{
-            node = new ConfigNode(uri, parent);   
+          default: {
+            node = new ConfigNode(uri, parent);
           }
         }
         break;
@@ -254,26 +257,35 @@ class DirectoryNode extends Node {
    * Now check with postfix of Edge TPU Compiler's default file name
    */
 
-  private isToolchainOne(fname:string):boolean{
-    return fname.endsWith(".pb") || (fname.endsWith(".tflite")&& !fname.endsWith("_edgetpu.tflite"))||fname.endsWith(".onnx");
+  private isToolchainOne(fname: string): boolean {
+    return (
+      fname.endsWith(".pb") ||
+      (fname.endsWith(".tflite") && !fname.endsWith("_edgetpu.tflite")) ||
+      fname.endsWith(".onnx")
+    );
   }
 
   private isToolchainEdgeTPU(fname: string): boolean {
-    return BackendContext.isRegistered("EdgeTPU") && fname.endsWith(".tflite") && !fname.endsWith("_edgetpu.tflite");
+    return (
+      BackendContext.isRegistered("EdgeTPU") &&
+      fname.endsWith(".tflite") &&
+      !fname.endsWith("_edgetpu.tflite")
+    );
   }
 
   /*
   Check if the file is a basemodel.
   The type to check depending on the default toolchain.
   */
-  private checkBaseModel(fname : string) : boolean{
-    let defaultToolchain = DefaultToolchain.getInstance().getToolchain()?.info.name;
-    if(!defaultToolchain) defaultToolchain = "onecc-docker";
-    switch(defaultToolchain){
-      case"onecc-docker":{
+  private checkBaseModel(fname: string): boolean {
+    let defaultToolchain =
+      DefaultToolchain.getInstance().getToolchain()?.info.name;
+    if (!defaultToolchain) defaultToolchain = "onecc-docker";
+    switch (defaultToolchain) {
+      case "onecc-docker": {
         return this.isToolchainOne(fname);
       }
-      case "edgetpu-compiler":{
+      case "edgetpu-compiler": {
         return this.isToolchainEdgeTPU(fname);
       }
       default: {
@@ -303,9 +315,7 @@ class DirectoryNode extends Node {
         if (dirNode && dirNode.getChildren().length > 0) {
           this._childNodes!.push(dirNode);
         }
-      } else if (
-        fstat.isFile() && this.checkBaseModel(fname)
-      ) {
+      } else if (fstat.isFile() && this.checkBaseModel(fname)) {
         const baseModelNode = NodeFactory.create(
           NodeType.baseModel,
           fpath,
@@ -1043,6 +1053,22 @@ export class OneTreeDataProvider implements vscode.TreeDataProvider<Node> {
       });
   }
 
+  getCfgDataByDefaultToolchain(): ICfgData {
+    const defaultToolchain =
+      DefaultToolchain.getInstance().getToolchain()?.info.name;
+    let cfgData: ICfgData;
+    switch (defaultToolchain) {
+      case "edgetpu-compiler":
+        cfgData = new EdgeTpuCfgData();
+        break;
+      case "onecc-docker":
+      default:
+        cfgData = new CfgData();
+        break;
+    }
+    return cfgData;
+  }
+
   /**
    * Create ONE configuration file for a base model
    * Input box is prefilled as <base model's name>.cfg
@@ -1056,18 +1082,15 @@ export class OneTreeDataProvider implements vscode.TreeDataProvider<Node> {
     const modelName = path.parse(node.path).name;
     const extName = path.parse(node.path).ext.slice(1);
 
+    const info = this.getCfgDataByDefaultToolchain();
     // TODO(dayo) Auto-configure more fields
-    const content = `[onecc]
-one-import-${extName}=True
-[one-import-${extName}]
-input_path=${modelName}.${extName}
-`;
+    const content = info.getContent(modelName, extName);
 
     const validateInputPath = (cfgName: string): string | undefined => {
       const cfgPath: string = path.join(dirPath, cfgName);
 
-      if (!cfgName.endsWith(".cfg")) {
-        return `A file extension must be .cfg`;
+      if (!cfgName.endsWith(info.getExtType())) {
+        return `A file extension must be ${info.getExtType()}`;
       }
 
       if (fs.existsSync(cfgPath)) {
@@ -1079,8 +1102,12 @@ input_path=${modelName}.${extName}
       .showInputBox({
         title: `Create ONE configuration of '${modelName}.${extName}' :`,
         placeHolder: `Enter a file name`,
-        value: `${modelName}.cfg`,
-        valueSelection: [0, `${modelName}.cfg`.length - `.cfg`.length],
+        value: `${modelName}${info.getExtType()}`,
+        valueSelection: [
+          0,
+          `${modelName}${info.getExtType()}`.length -
+            `${info.getExtType()}`.length,
+        ],
         validateInput: validateInputPath,
       })
       .then((value) => {
@@ -1103,7 +1130,7 @@ input_path=${modelName}.${extName}
               vscode.commands.executeCommand(
                 "vscode.openWith",
                 uri,
-                CfgEditorPanel.viewType
+                info.getViewType()
               );
             });
           } else {

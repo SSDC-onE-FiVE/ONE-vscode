@@ -227,7 +227,11 @@ export class EdgetpuCfgEditorPanel implements ICfgEditorPanel {
     document: vscode.TextDocument,
     webviewPanel: vscode.WebviewPanel
   ): void {
-    vscode.commands.executeCommand("setContext", EdgetpuCfgEditorPanel.viewType, true);
+    vscode.commands.executeCommand(
+      "setContext",
+      EdgetpuCfgEditorPanel.viewType,
+      true
+    );
 
     const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(
       (e) => {
@@ -276,10 +280,7 @@ export class EdgetpuCfgEditorPanel implements ICfgEditorPanel {
     });
   }
 
-  updateWebview(
-    document: vscode.TextDocument,
-    webview: vscode.Webview
-  ): void {
+  updateWebview(document: vscode.TextDocument, webview: vscode.Webview): void {
     this._oneConfigMap[document.uri.toString()].setWithString(
       document.getText()
     );

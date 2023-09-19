@@ -15,16 +15,25 @@
  */
 
 export interface ICfgData {
-    // returns data decoded or parsed as object
-    getAsConfig(): any;
-    // returns data encoded or stringfied as string
-    getAsString(): string;
-    // sets data with object decoded or parsed
-    setWithConfig(cfg: any): void;
-    // sets data with string encoded or stringfied
-    setWithString(text: string): void;
-    updateSectionWithKeyValue(section: string, key: string, value: string): void;
-    updateSectionWithValue(section: string, value: string): void;
-    isSame(textStringified: string): boolean;
-    sort(): void;
+  // returns data decoded or parsed as object
+  getAsConfig(): any;
+  // returns data encoded or stringfied as stringz
+  getAsString(): string;
+  // sets data with object decoded or parsed
+  setWithConfig(cfg: any): void;
+  // sets data with string encoded or stringfied
+  setWithString(text: string): void;
+  updateSectionWithKeyValue(section: string, key: string, value: string): void;
+  updateSectionWithValue(section: string, value: string): void;
+  isSame(textStringified: string): boolean;
+  sort(): void;
+
+  // this function provides ViewType for each config type
+  getViewType(): string;
+
+  // this function provides Extension Type for each config type
+  getExtType(): string;
+
+  // this function provides the default content for each config type when one-explorer creates a new config file.
+  getContent(modelName: string | null, extName: string | null): string;
 }
