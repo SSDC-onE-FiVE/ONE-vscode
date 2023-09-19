@@ -72,7 +72,7 @@ export class EdgetpuCfgEditorPanel implements ICfgEditorPanel {
         }
       ),
       // Add command registration here
-      vscode.commands.registerCommand("one.cfgEditor.setDefaultValues", () => {
+      vscode.commands.registerCommand("one.cfgEditor.setDefaultEdgetpuValues", () => {
         if (!provider._activeWebviewPanel || !provider._activeDocument) {
           return;
         }
@@ -80,7 +80,7 @@ export class EdgetpuCfgEditorPanel implements ICfgEditorPanel {
         const cfgName = path.parse(provider._activeDocument!.fileName).name;
 
         provider._activeWebviewPanel!.webview.postMessage({
-          type: "setDefaultValues",
+          type: "setDefaultEdgetpuValues",
           name: cfgName,
         });
       }),

@@ -40,8 +40,8 @@ function main() {
       case "displayCfgToEditor":
         displayCfgToEditor(message.text);
         break;
-      case "setDefaultValues":
-        setDefaultValues(message.name);
+      case "setDefaultEdgetpuValues":
+        setDefaultEdgetpuValues(message.name);
         break;
       case "applyDialogPath":
         document.getElementById(message.elemID).value = message.path;
@@ -62,7 +62,12 @@ function main() {
   postMessageToVsCode({ type: "requestDisplayCfg" });
 }
 
-function setDefaultValues(name) {
+function setDefaultEdgetpuValues(name) {
+  // EdgeTPu COmpiler steps
+  document.getElementById("checkboxEdgeTPUCompile").checked = true;
+
+  updateEdgeTPUStep(); 
+
   // compile step
   let compiledName = name + ".tflite";
   let compiledExt = name + "_edgetpu.tflite";
