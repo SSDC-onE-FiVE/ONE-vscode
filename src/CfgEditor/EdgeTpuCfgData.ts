@@ -20,6 +20,7 @@ import { ICfgData } from "./ICfgData";
 const sections = [
     "edgetpu-compiler",
     "edgetpu-compile",
+    "edgetpu-profile"
 ];
 
 export class EdgeTpuCfgData implements ICfgData {
