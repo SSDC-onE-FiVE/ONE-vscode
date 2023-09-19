@@ -41,7 +41,7 @@ type CfgKeys = keyof Cfg;
 // type CfgOneImportTf = any;
 
 type CfgType = {
-  default: any;
+  one: any;
   "edge-tpu": any;
 };
 type CfgTypeKeys = keyof CfgType;
@@ -142,7 +142,7 @@ export class ConfigObj {
   private constructor(uri: vscode.Uri, rawObj: Cfg) {
     this.uri = uri;
     this.rawObj = rawObj;
-    this.configType = "default";
+    this.configType = "one";
     const ext = path.extname(uri.fsPath);
     if (BackendContext.isRegistered("EdgeTPU") && ext === ".edgetpucfg") {
       this.configType = "edge-tpu";
