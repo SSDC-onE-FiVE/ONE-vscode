@@ -117,20 +117,12 @@ export function updateEdgeTPUCompile() {
   });
 }
 
-export function updateProfile() {
+export function updateEdgeTPUProfile() {
   let content = "";
-  content += iniKeyValueString(
-    "backend",
-    document.getElementById("profileBackend").value
-  );
-  content += iniKeyValueString(
-    "command",
-    document.getElementById("profileCommand").value
-  );
 
   postMessageToVsCode({
     type: "setSection",
-    section: "one-profile",
+    section: "edgetpu-profile",
     param: content,
   });
 }
