@@ -32,6 +32,7 @@ window.addEventListener("load", main);
 function main() {
   registerCompilerStep();
   registerCompileOptions();
+  registerCodiconEvents();
 
   // event from vscode extension
   window.addEventListener("message", (event) => {
@@ -132,6 +133,7 @@ function registerCompileOptions() {
   edgeTPUIntermediateTensors.addEventListener("input", function () {
     if (edgeTPUSearchDelegate.checked) {
       edgeTPUSearchDelegate.checked = false;
+      edgeTPUDelegateSearchStepDiv.style.display = "none";
     }
     updateEdgeTPUCompile();
     applyUpdates();
@@ -158,4 +160,19 @@ function registerCompileOptions() {
     updateEdgeTPUCompile();
     applyUpdates();
   });
+}
+
+function registerCodiconEvents() {
+  document
+    .getElementById("EdgeTPUInputPathSearch")
+    .addEventListener("click", function () {
+      postMessageToVsCode({
+        type: "getPathByDialog",
+        isFolder: false,
+        ext: ["tflite"],
+        oldPath: document.getElementById("EdgeTPUInputPath").value,
+        postStep: "EdgeTPUCompile",
+        postElemID: "EdgeTPUInputPath",
+      });
+    });
 }
