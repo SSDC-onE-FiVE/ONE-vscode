@@ -148,7 +148,10 @@ export class ConfigObj {
     this.rawObj = rawObj;
     this.configType = CfgType.one;
     const ext = path.extname(uri.fsPath);
-    if (BackendContext.isRegistered("EdgeTPU") && ext === ".edgetpucfg") {
+    if (
+      // BackendContext.isRegistered(EdgeTpuConfigSetting.backendName) &&
+      ext === EdgeTpuConfigSetting.ext
+    ) {
       this.configType = CfgType.edgeTpu;
     }
 
