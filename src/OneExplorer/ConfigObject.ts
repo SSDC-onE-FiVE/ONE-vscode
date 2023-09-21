@@ -40,11 +40,10 @@ type CfgKeys = keyof Cfg;
 // type CfgOneImportOnnx = any;
 // type CfgOneImportTf = any;
 
-type CfgType = {
-  one: any;
-  "edge-tpu": any;
-};
-type CfgTypeKeys = keyof CfgType;
+enum CfgType {
+  one,
+  edgeTpu,
+}
 
 /**
  * @brief A helper class to get parsed artifacts (baseModels, products)
@@ -78,7 +77,7 @@ export class ConfigObj {
   /**
    * type of config setting
    */
-  configType: CfgTypeKeys;
+  configType: CfgType;
 
   get getBaseModels() {
     return this.obj.baseModels;
@@ -132,12 +131,10 @@ export class ConfigObj {
   public get configSetting(): ConfigSetting {
     let configSetting: ConfigSetting;
     switch (this.configType) {
-      case "edge-tpu":
+      case CfgType.edgeTpu:
         configSetting = new EdgeTpuConfigSetting();
         break;
-      case "one":
-        configSetting = new OneConfigSetting();
-        break;
+      case CfgType.one:
       default:
         configSetting = new OneConfigSetting();
     }
@@ -149,10 +146,10 @@ export class ConfigObj {
   private constructor(uri: vscode.Uri, rawObj: Cfg) {
     this.uri = uri;
     this.rawObj = rawObj;
-    this.configType = "one";
+    this.configType = CfgType.one;
     const ext = path.extname(uri.fsPath);
     if (BackendContext.isRegistered("EdgeTPU") && ext === ".edgetpucfg") {
-      this.configType = "edge-tpu";
+      this.configType = CfgType.edgeTpu;
     }
 
     // separate to init()
