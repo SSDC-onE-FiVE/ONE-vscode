@@ -67,7 +67,7 @@ search_delegate=True
 delegate_search_step=1
 `;
 
-const duplicateEdgeTpuCfgText=`
+const duplicateEdgeTpuCfgText = `
 [edgetpu-compiler]
 edgetpu-compile=True
 edgetpu-profile=False
@@ -81,7 +81,7 @@ search_delegate=True
 delegate_search_step=1
 `;
 
-const duplicateEdgeTpuCfgText2=`
+const duplicateEdgeTpuCfgText2 = `
 [edgetpu-compiler]
 edgetpu-compile=True
 edgetpu-profile=False
@@ -100,6 +100,27 @@ suite("EdgetpuCfgEditor", function () {
       test("is constructed", function () {
         const data = new EdgeTpuCfgData();
         assert.instanceOf(data, EdgeTpuCfgData);
+      });
+    });
+
+    suite("#isSame()", function () {
+      test("is same to string encoded/stringified", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const isSame: boolean = data.isSame(sampleEdgeTpuCfgText1);
+        assert.isTrue(isSame);
+      });
+      test("is not same to string encoded/stringified", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const isSame: boolean = data.isSame(sampleEdgeTpuCfgText2);
+        assert.isNotTrue(isSame);
+      });
+      test("is not same to string encoded/stringified - 2", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const isSame: boolean = data.isSame(sampleEdgeTpuCfgText3);
+        assert.isNotTrue(isSame);
       });
     });
 
