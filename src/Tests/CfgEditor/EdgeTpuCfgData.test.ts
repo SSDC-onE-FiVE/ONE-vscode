@@ -67,7 +67,7 @@ search_delegate=True
 delegate_search_step=1
 `;
 
-const duplicateEdgeTpuCfgTest=`
+const duplicateEdgeTpuCfgText=`
 [edgetpu-compiler]
 edgetpu-compile=True
 edgetpu-profile=False
@@ -81,7 +81,7 @@ search_delegate=True
 delegate_search_step=1
 `;
 
-const duplicateEdgeTpuCfgTest2=`
+const duplicateEdgeTpuCfgText2=`
 [edgetpu-compiler]
 edgetpu-compile=True
 edgetpu-profile=False
@@ -102,5 +102,15 @@ suite("EdgetpuCfgEditor", function () {
         assert.instanceOf(data, EdgeTpuCfgData);
       });
     });
+
+    suite("#sorted()", function () {
+      test("sorts config", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        data.sort();
+        const isSame: boolean = data.isSame(sampleEdgeTpuCfgText1);
+        assert.isTrue(isSame);
+      });
+    });
   });
-}); 
+});
