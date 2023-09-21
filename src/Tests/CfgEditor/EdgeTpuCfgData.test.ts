@@ -562,5 +562,27 @@ suite("EdgetpuCfgEditor", function () {
       });
     });
 
+    suite("#resolveDuplicated()", function() {
+      test("resolve duplicated options", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(duplicateEdgeTpuCfgText);
+        const isSame: boolean = data.isSame(resolvedSampleEdgeTpuCfgText);
+        assert.isTrue(isSame);
+      });
+      
+      test("resolve duplicated options 2", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(duplicateEdgeTpuCfgText2);
+        const isSame: boolean = data.isSame(resolvedSampleEdgeTpuCfgText);
+        assert.isTrue(isSame);
+      });
+
+      test("NEG: no duplicated keys to resolve", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const isSame: boolean = data.isSame(sampleEdgeTpuCfgText);
+        assert.isTrue(isSame);
+      });
+    });
   });
 });
