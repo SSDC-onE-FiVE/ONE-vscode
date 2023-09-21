@@ -149,7 +149,7 @@ export class ConfigObj {
     this.configType = CfgType.one;
     const ext = path.extname(uri.fsPath);
     if (
-      // BackendContext.isRegistered(EdgeTpuConfigSetting.backendName) &&
+      BackendContext.isRegistered(EdgeTpuConfigSetting.backendName) &&
       ext === EdgeTpuConfigSetting.ext
     ) {
       this.configType = CfgType.edgeTpu;
