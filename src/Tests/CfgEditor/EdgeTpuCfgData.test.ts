@@ -456,5 +456,111 @@ suite("EdgetpuCfgEditor", function () {
       });
     });
 
+    suite("#getAsString()", function () {
+      test("gets string encoded/stringified", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const cfg1 = data.getAsConfig();
+
+        const stringfied = data.getAsString();
+        let data2 = new EdgeTpuCfgData();
+        data2.setWithString(stringfied);
+        const cfg2 = data2.getAsConfig();
+
+        assert.strictEqual(
+          cfg1["edgetpu-compiler"]["edgetpu-compile"],
+          cfg2["edgetpu-compiler"]["edgetpu-compile"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compiler"]["edgetpu-profile"],
+          cfg2["edgetpu-compiler"]["edgetpu-profile"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compile"]["input_path"],
+          cfg2["edgetpu-compile"]["input_path"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compile"]["output_path"],
+          cfg2["edgetpu-compile"]["output_path"]
+        );
+      });
+
+      test("gets string encoded/stringified 2", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const cfg1 = data.getAsConfig();
+
+        const stringfied = data.getAsString();
+        let data2 = new EdgeTpuCfgData();
+        data2.setWithString(stringfied);
+        const cfg2 = data2.getAsConfig();
+
+        assert.strictEqual(
+          cfg1["edgetpu-compiler"]["edgetpu-compile"],
+          cfg2["edgetpu-compiler"]["edgetpu-compile"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compiler"]["edgetpu-profile"],
+          cfg2["edgetpu-compiler"]["edgetpu-profile"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compile"]["input_path"],
+          cfg2["edgetpu-compile"]["input_path"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compile"]["output_path"],
+          cfg2["edgetpu-compile"]["output_path"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compile"]["intermediate_tensors"],
+          cfg2["edgetpu-compile"]["intermediate_tensors"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compile"]["show_operations"],
+          cfg2["edgetpu-compile"]["show_operations"]
+        );
+      });
+
+      test("gets string encoded/stringified 3", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const cfg1 = data.getAsConfig();
+
+        const stringfied = data.getAsString();
+        let data2 = new EdgeTpuCfgData();
+        data2.setWithString(stringfied);
+        const cfg2 = data2.getAsConfig();
+
+        assert.strictEqual(
+          cfg1["edgetpu-compiler"]["edgetpu-compile"],
+          cfg2["edgetpu-compiler"]["edgetpu-compile"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compiler"]["edgetpu-profile"],
+          cfg2["edgetpu-compiler"]["edgetpu-profile"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compile"]["input_path"],
+          cfg2["edgetpu-compile"]["input_path"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compile"]["output_path"],
+          cfg2["edgetpu-compile"]["output_path"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compile"]["show_operations"],
+          cfg2["edgetpu-compile"]["show_operations"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compile"]["search_delegate"],
+          cfg2["edgetpu-compile"]["search_delegate"]
+        );
+        assert.strictEqual(
+          cfg1["edgetpu-compile"]["delegate_search_step"],
+          cfg2["edgetpu-compile"]["delegate_search_step"]
+        );
+      });
+    });
+
   });
 });
