@@ -129,7 +129,7 @@ export class ConfigObj {
   /**
    * @brief getter for config setting
    */
-  public get getConfigSetting(): ConfigSetting {
+  public get configSetting(): ConfigSetting {
     let configSetting: ConfigSetting;
     switch (this.configType) {
       case "edge-tpu":
@@ -156,7 +156,7 @@ export class ConfigObj {
     }
 
     // separate to init()
-    const configSetting = this.getConfigSetting;
+    const configSetting = this.configSetting;
     this.obj = {
       baseModels: configSetting.parseBaseModels(uri.fsPath, rawObj),
       products: configSetting.parseProducts(uri.fsPath, rawObj),
@@ -169,7 +169,7 @@ export class ConfigObj {
   ): Thenable<void> {
     const getSection = (name: string) => {
       const ext = path.extname(name);
-      const sections = this.getConfigSetting.sections;
+      const sections = this.configSetting.sections;
 
       return sections[ext as keyof typeof sections];
     };
@@ -190,7 +190,7 @@ export class ConfigObj {
       );
     }
 
-    this.getConfigSetting.updateOutPath(newpath, this.rawObj, kSection);
+    this.configSetting.updateOutPath(newpath, this.rawObj, kSection);
 
     return vscode.workspace.fs.writeFile(
       this.uri,
