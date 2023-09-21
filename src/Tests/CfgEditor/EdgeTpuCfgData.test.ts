@@ -67,7 +67,7 @@ search_delegate=True
 delegate_search_step=1
 `;
 
-const duplicateEdgeTpuCfgTest=`
+const duplicateEdgeTpuCfgText=`
 [edgetpu-compiler]
 edgetpu-compile=True
 edgetpu-profile=False
@@ -81,7 +81,7 @@ search_delegate=True
 delegate_search_step=1
 `;
 
-const duplicateEdgeTpuCfgTest2=`
+const duplicateEdgeTpuCfgText2=`
 [edgetpu-compiler]
 edgetpu-compile=True
 edgetpu-profile=False
@@ -102,5 +102,126 @@ suite("EdgetpuCfgEditor", function () {
         assert.instanceOf(data, EdgeTpuCfgData);
       });
     });
+
+    suite("#setWithConfig()", function () {
+      test("sets with decoded/parsed config param", function () {
+        let data = new EdgeTpuCfgData();
+        const cfg = ini.parse(sampleEdgeTpuCfgText);
+        data.setWithConfig(cfg);
+        const dataCfg = data.getAsConfig();
+        assert.strictEqual(
+          dataCfg["edgetpu-compiler"]["edgetpu-compile"],
+          cfg["edgetpu-compiler"]["edgetpu-compile"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compiler"]["edgetpu-profile"],
+          cfg["edgetpu-compiler"]["edgetpu-profile"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["input_path"],
+          cfg["edgetpu-compile"]["input_path"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["output_path"],
+          cfg["edgetpu-compile"]["output_path"]
+        );
+      });
+
+      test("sets with decoded/parsed config param 2", function () {
+        let data = new EdgeTpuCfgData();
+        const cfg = ini.parse(sampleEdgeTpuCfgText2);
+        data.setWithConfig(cfg);
+        const dataCfg = data.getAsConfig();
+        assert.strictEqual(
+          dataCfg["edgetpu-compiler"]["edgetpu-compile"],
+          cfg["edgetpu-compiler"]["edgetpu-compile"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compiler"]["edgetpu-profile"],
+          cfg["edgetpu-compiler"]["edgetpu-profile"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["input_path"],
+          cfg["edgetpu-compile"]["input_path"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["output_path"],
+          cfg["edgetpu-compile"]["output_path"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["intermediate_tensors"],
+          cfg["edgetpu-compile"]["intermediate_tensors"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["show_operations"],
+          cfg["edgetpu-compile"]["show_operations"]
+        );
+      });
+
+      test("sets with decoded/parsed config param 3", function () {
+        let data = new EdgeTpuCfgData();
+        const cfg = ini.parse(sampleEdgeTpuCfgText3);
+        data.setWithConfig(cfg);
+        const dataCfg = data.getAsConfig();
+        assert.strictEqual(
+          dataCfg["edgetpu-compiler"]["edgetpu-compile"],
+          cfg["edgetpu-compiler"]["edgetpu-compile"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compiler"]["edgetpu-profile"],
+          cfg["edgetpu-compiler"]["edgetpu-profile"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["input_path"],
+          cfg["edgetpu-compile"]["input_path"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["output_path"],
+          cfg["edgetpu-compile"]["output_path"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["show_operations"],
+          cfg["edgetpu-compile"]["show_operations"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["search_delegate"],
+          cfg["edgetpu-compile"]["search_delegate"]
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["delegate_search_step"],
+          cfg["edgetpu-compile"]["delegate_search_step"]
+        );
+      });
+
+      test ("NEG: try to set with config using 'intemediate_tensors' and a set of 'search_delegate' and 'delegate_search_step' in duplicate", function () {
+        let data = new EdgeTpuCfgData();
+        const cfg = ini.parse(duplicateEdgeTpuCfgText);
+        data.setWithConfig(cfg);
+        const dataCfg = data.getAsConfig();
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["intermediate_tensors"], undefined
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["search_delegate"], undefined
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["delegate_search_step"], undefined
+        );
+      });   
+
+      test ("NEG: try to set with config using 'intemediate_tensors' and 'search_delegate' in duplicate", function () {
+        let data = new EdgeTpuCfgData();
+        const cfg = ini.parse(duplicateEdgeTpuCfgText2);
+        data.setWithConfig(cfg);
+        const dataCfg = data.getAsConfig();
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["intermediate_tensors"], undefined
+        );
+        assert.strictEqual(
+          dataCfg["edgetpu-compile"]["search_delegate"], undefined
+        );
+      });      
+    });
+
   });
 }); 
