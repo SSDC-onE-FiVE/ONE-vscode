@@ -28,15 +28,15 @@ edgetpu-compile=True
 edgetpu-profile=False
 
 [edgetpu-compile]
-input_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model.tflite
-output_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
+input_path=/home/usr/ONE-vscode/res/modelDir/truediv/model.tflite
+output_path=/home/usr/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
 `;
 
 // eslint-disable-next-line no-unused-vars
 const sampleEdgeTpuCfgText1 = `
 [edgetpu-compile]
-input_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model.tflite
-output_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
+input_path=/home/usr/ONE-vscode/res/modelDir/truediv/model.tflite
+output_path=/home/usr/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
 
 [edgetpu-compiler]
 edgetpu-compile=True
@@ -49,8 +49,8 @@ edgetpu-compile=True
 edgetpu-profile=False
 
 [edgetpu-compile]
-input_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model.tflite
-output_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
+input_path=/home/usr/ONE-vscode/res/modelDir/truediv/model.tflite
+output_path=/home/usr/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
 intermediate_tensors=opr1
 show_operations=True
 `;
@@ -61,8 +61,8 @@ edgetpu-compile=True
 edgetpu-profile=False
 
 [edgetpu-compile]
-input_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model.tflite
-output_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
+input_path=/home/usr/ONE-vscode/res/modelDir/truediv/model.tflite
+output_path=/home/usr/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
 show_operations=True
 search_delegate=True
 delegate_search_step=1
@@ -74,8 +74,8 @@ edgetpu-compile=True
 edgetpu-profile=False
 
 [edgetpu-compile]
-input_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model.tflite
-output_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
+input_path=/home/usr/ONE-vscode/res/modelDir/truediv/model.tflite
+output_path=/home/usr/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
 intermediate_tensors=opr1
 show_operations=True
 search_delegate=True
@@ -88,8 +88,8 @@ edgetpu-compile=True
 edgetpu-profile=False
 
 [edgetpu-compile]
-input_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model.tflite
-output_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
+input_path=/home/usr/ONE-vscode/res/modelDir/truediv/model.tflite
+output_path=/home/usr/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
 intermediate_tensors=opr1
 show_operations=True
 search_delegate=True
@@ -101,8 +101,8 @@ edgetpu-compile=True
 edgetpu-profile=False
 
 [edgetpu-compile]
-input_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model.tflite
-output_path=/home/sohee/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
+input_path=/home/usr/ONE-vscode/res/modelDir/truediv/model.tflite
+output_path=/home/usr/ONE-vscode/res/modelDir/truediv/model_edgetpu.tflite
 show_operations=True
 `;
 
@@ -562,14 +562,14 @@ suite("EdgetpuCfgEditor", function () {
       });
     });
 
-    suite("#resolveDuplicated()", function() {
+    suite("#resolveDuplicated()", function () {
       test("resolve duplicated options", function () {
         let data = new EdgeTpuCfgData();
         data.setWithString(duplicateEdgeTpuCfgText);
         const isSame: boolean = data.isSame(resolvedSampleEdgeTpuCfgText);
         assert.isTrue(isSame);
       });
-      
+
       test("resolve duplicated options 2", function () {
         let data = new EdgeTpuCfgData();
         data.setWithString(duplicateEdgeTpuCfgText2);
@@ -581,6 +581,161 @@ suite("EdgetpuCfgEditor", function () {
         let data = new EdgeTpuCfgData();
         data.setWithString(sampleEdgeTpuCfgText);
         const isSame: boolean = data.isSame(sampleEdgeTpuCfgText);
+        assert.isTrue(isSame);
+      });
+    });
+
+    suite("#updateSectionWithKeyValue()", function () {
+      test("update key of section which already exists-1", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText2);
+        data.updateSectionWithKeyValue(
+          "edgetpu-compile",
+          "intermediate_tensors",
+          "opr1, opr2"
+        );
+        const cfg = data.getAsConfig();
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["intermediate_tensors"],
+          "opr1, opr2"
+        );
+      });
+      test("update key of section which already exists-2", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText3);
+        data.updateSectionWithKeyValue(
+          "edgetpu-compile",
+          "delegate_search_step",
+          "3"
+        );
+        const cfg = data.getAsConfig();
+        assert.strictEqual(cfg["edgetpu-compile"]["delegate_search_step"], "3");
+      });
+      test("update section which is not written", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        data.updateSectionWithKeyValue(
+          "edgetpu-compile",
+          "intermediate_tensors",
+          "opr1, opr2"
+        );
+        const cfg = data.getAsConfig();
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["intermediate_tensors"],
+          "opr1, opr2"
+        );
+      });
+      test("NEG: try to update 'search_delegate' value when 'intermediate_tensors' value exists", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText2);
+        data.updateSectionWithKeyValue(
+          "edgetpu-compile",
+          "search_delegate",
+          "True"
+        );
+        const cfg = data.getAsConfig();
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["intermediate_tensors"],
+          undefined
+        );
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["search_delegate"],
+          undefined
+        );
+      });
+    });
+
+    suite("#updateSectionWithValue()", function () {
+      test("update section of config with value encoded/stringified", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const stringified: string = `
+input_path=./inception_v3.tflite
+output_path=./inception_v3_edgetpu.tflite
+intermediate_tensors=opr1
+show_operations=True
+          `;
+        data.updateSectionWithValue("edgetpu-compile", stringified);
+        const cfg = data.getAsConfig();
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["input_path"],
+          "./inception_v3.tflite"
+        );
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["output_path"],
+          "./inception_v3_edgetpu.tflite"
+        );
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["intermediate_tensors"],
+          "opr1"
+        );
+        assert.strictEqual(cfg["edgetpu-compile"]["show_operations"], "True");
+      });
+
+      test("NEG: try to update 'intermediate_tensors' and 'search_delegate' together", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const stringified: string = `
+input_path=./inception_v3.tflite
+output_path=./inception_v3_edgetpu.tflite
+intermediate_tensors=opr1
+show_operations=True
+search_delegate=True
+delegate_search_step=1
+          `;
+        data.updateSectionWithValue("edgetpu-compile", stringified);
+        const cfg = data.getAsConfig();
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["input_path"],
+          "./inception_v3.tflite"
+        );
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["output_path"],
+          "./inception_v3_edgetpu.tflite"
+        );
+        assert.strictEqual(cfg["edgetpu-compile"]["show_operations"], "True");
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["intermediate_tensors"],
+          undefined
+        );
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["search_delegate"],
+          undefined
+        );
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["delegate_search_step"],
+          undefined
+        );
+      });
+    });
+
+    suite("#isSame()", function () {
+      test("is same to string encoded/stringified", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const isSame: boolean = data.isSame(sampleEdgeTpuCfgText1);
+        assert.isTrue(isSame);
+      });
+      test("is not same to string encoded/stringified", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const isSame: boolean = data.isSame(sampleEdgeTpuCfgText2);
+        assert.isNotTrue(isSame);
+      });
+      test("is not same to string encoded/stringified - 2", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const isSame: boolean = data.isSame(sampleEdgeTpuCfgText3);
+        assert.isNotTrue(isSame);
+      });
+    });
+
+    suite("#sorted()", function () {
+      test("sorts config", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        data.sort();
+        const isSame: boolean = data.isSame(sampleEdgeTpuCfgText1);
         assert.isTrue(isSame);
       });
     });
