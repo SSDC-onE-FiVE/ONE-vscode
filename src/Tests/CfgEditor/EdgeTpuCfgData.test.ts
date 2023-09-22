@@ -103,6 +103,66 @@ suite("EdgetpuCfgEditor", function () {
       });
     });
 
+    suite("#updateSectionWithKeyValue()", function () {
+      test("update key of section which already exists-1", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText2);
+        data.updateSectionWithKeyValue(
+          "edgetpu-compile",
+          "intermediate_tensors",
+          "opr1, opr2"
+        );
+        const cfg = data.getAsConfig();
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["intermediate_tensors"],
+          "opr1, opr2"
+        );
+      });
+      test("update key of section which already exists-2", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText3);
+        data.updateSectionWithKeyValue(
+          "edgetpu-compile",
+          "delegate_search_step",
+          "3"
+        );
+        const cfg = data.getAsConfig();
+        assert.strictEqual(cfg["edgetpu-compile"]["delegate_search_step"], "3");
+      });
+      test("update section which is not written", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        data.updateSectionWithKeyValue(
+          "edgetpu-compile",
+          "intermediate_tensors",
+          "opr1, opr2"
+        );
+        const cfg = data.getAsConfig();
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["intermediate_tensors"],
+          "opr1, opr2"
+        );
+      });
+      test("NEG: try to update 'search_delegate' value when 'intermediate_tensors' value exists", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText2);
+        data.updateSectionWithKeyValue(
+          "edgetpu-compile",
+          "search_delegate",
+          "True"
+        );
+        const cfg = data.getAsConfig();
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["intermediate_tensors"],
+          undefined
+        );
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["search_delegate"],
+          undefined
+        );
+      });
+    });
+
     suite("#updateSectionWithValue()", function () {
       test("update section of config with value encoded/stringified", function () {
         let data = new EdgeTpuCfgData();
