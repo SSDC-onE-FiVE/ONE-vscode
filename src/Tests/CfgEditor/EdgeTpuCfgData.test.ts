@@ -190,7 +190,7 @@ show_operations=True
         assert.strictEqual(cfg["edgetpu-compile"]["show_operations"], "True");
       });
 
-      test("NEG: try to update 'intermediate_tensors' and 'search_delegate' togather", function () {
+      test("NEG: try to update 'intermediate_tensors' and 'search_delegate' together", function () {
         let data = new EdgeTpuCfgData();
         data.setWithString(sampleEdgeTpuCfgText);
         const stringified: string = `
