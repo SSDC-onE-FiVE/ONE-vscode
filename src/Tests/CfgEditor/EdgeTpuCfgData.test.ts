@@ -103,6 +103,70 @@ suite("EdgetpuCfgEditor", function () {
       });
     });
 
+    suite("#updateSectionWithValue()", function () {
+      test("update section of config with value encoded/stringified", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const stringified: string = `
+input_path=./inception_v3.tflite
+output_path=./inception_v3_edgetpu.tflite
+intermediate_tensors=opr1
+show_operations=True
+          `;
+        data.updateSectionWithValue("edgetpu-compile", stringified);
+        const cfg = data.getAsConfig();
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["input_path"],
+          "./inception_v3.tflite"
+        );
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["output_path"],
+          "./inception_v3_edgetpu.tflite"
+        );
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["intermediate_tensors"],
+          "opr1"
+        );
+        assert.strictEqual(cfg["edgetpu-compile"]["show_operations"], "True");
+      });
+
+      test("NEG: try to update 'intermediate_tensors' and 'search_delegate' togather", function () {
+        let data = new EdgeTpuCfgData();
+        data.setWithString(sampleEdgeTpuCfgText);
+        const stringified: string = `
+input_path=./inception_v3.tflite
+output_path=./inception_v3_edgetpu.tflite
+intermediate_tensors=opr1
+show_operations=True
+search_delegate=True
+delegate_search_step=1
+          `;
+        data.updateSectionWithValue("edgetpu-compile", stringified);
+        const cfg = data.getAsConfig();
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["input_path"],
+          "./inception_v3.tflite"
+        );
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["output_path"],
+          "./inception_v3_edgetpu.tflite"
+        );
+        assert.strictEqual(cfg["edgetpu-compile"]["show_operations"], "True");
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["intermediate_tensors"],
+          undefined
+        );
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["search_delegate"],
+          undefined
+        );
+        assert.strictEqual(
+          cfg["edgetpu-compile"]["delegate_search_step"],
+          undefined
+        );
+      });
+    });
+
     suite("#isSame()", function () {
       test("is same to string encoded/stringified", function () {
         let data = new EdgeTpuCfgData();
