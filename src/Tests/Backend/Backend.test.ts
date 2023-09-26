@@ -75,7 +75,12 @@ suite("Backend", function () {
         delete gToolchainEnvMap[backend.name()];
       }
 
+      if (globalBackendMap[backend.name()] !== undefined) {
+        delete globalBackendMap[backend.name()];
+      }
+
       assert.isUndefined(gToolchainEnvMap[backend.name()]);
+      assert.isUndefined(globalBackendMap[backend.name()]);
     });
   });
 });
