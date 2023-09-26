@@ -34,23 +34,22 @@ import {
   MockCompilerWithMultipleInstalledToolchains,
   MockCompilerWithNoInstalledToolchain,
 } from "../MockCompiler";
-import { OneCompiler } from "../../Backend/One/OneToolchain";
 
 suite("Toolchain", function () {
-  const oneToolhcainEnv = new ToolchainEnv(new OneCompiler());
   const oneBackendName = "ONE";
+  const edgeTPUBackendName = "EdgeTPU";
+  const backendName = "dummy_backend";
   const compiler = new MockCompiler();
   const toolchainEnv = new ToolchainEnv(compiler);
-  const backendName = "dummy_backend";
 
   setup(function () {
-    // TODO: provide delete function for backend, which recursively deleting toolchain and executors
-    Object.keys(gToolchainEnvMap).forEach(
-      (key) => delete gToolchainEnvMap[key]
-    );
-
-    gToolchainEnvMap[oneBackendName] = oneToolhcainEnv;
     gToolchainEnvMap[backendName] = toolchainEnv;
+  });
+
+  teardown(function () {
+    if (gToolchainEnvMap[backendName] !== undefined) {
+      delete gToolchainEnvMap[backendName];
+    }
   });
 
   suite("BaseNode", function () {
@@ -117,20 +116,22 @@ suite("Toolchain", function () {
     suite("#createBackendNodes()", function () {
       test("creates BackendNode list", function () {
         let bnodes: BackendNode[] = NodeBuilder.createBackendNodes();
-        assert.strictEqual(bnodes.length, 2);
+        assert.strictEqual(bnodes.length, 3);
         assert.strictEqual(bnodes[0].label, oneBackendName);
-        assert.strictEqual(bnodes[1].label, backendName);
+        assert.strictEqual(bnodes[1].label, edgeTPUBackendName);
+        assert.strictEqual(bnodes[2].label, backendName); 
       });
     });
     suite("#createToolchainNodes()", function () {
       test("creates ToolchainNode list", function () {
         let bnodes: BackendNode[] = NodeBuilder.createBackendNodes();
-        assert.strictEqual(bnodes.length, 2);
+        assert.strictEqual(bnodes.length, 3);
         assert.strictEqual(bnodes[0].label, oneBackendName);
-        assert.strictEqual(bnodes[1].label, backendName);
+        assert.strictEqual(bnodes[1].label, edgeTPUBackendName);
+        assert.strictEqual(bnodes[2].label, backendName);
 
-        // Ignore bnodes[0] because it is ONE Toolchain backend.
-        let bnode2: BackendNode = bnodes[1];
+        // Ignore bnodes[0], bnodes[1] because these are ONE Toolchain backend and EdgeTPU Toolchain backend.
+        let bnode2: BackendNode = bnodes[2];
         let tnodes2 = NodeBuilder.createToolchainNodes(bnode2);
         assert.strictEqual(tnodes2.length, 1);
         tnodes2.forEach((tnode) => {
@@ -141,10 +142,11 @@ suite("Toolchain", function () {
     suite("#createToolchainNodes()", function () {
       test("NEG: creates ToolchainNode list using invalid backend node", function () {
         const bnodes: BackendNode[] = NodeBuilder.createBackendNodes();
-        assert.strictEqual(bnodes.length, 2);
+        assert.strictEqual(bnodes.length, 3);
         assert.strictEqual(bnodes[0].label, oneBackendName);
-        assert.strictEqual(bnodes[1].label, backendName);
-        const tnodes1 = NodeBuilder.createToolchainNodes(bnodes[1]);
+        assert.strictEqual(bnodes[1].label, edgeTPUBackendName);
+        assert.strictEqual(bnodes[2].label, backendName);
+        const tnodes1 = NodeBuilder.createToolchainNodes(bnodes[2]);
         assert.strictEqual(tnodes1.length, 1);
         tnodes1.forEach((tnode) => {
           assert.strictEqual(tnode.backendName, backendName);
@@ -198,20 +200,22 @@ suite("Toolchain", function () {
       test("gets Children with undefined", function (done) {
         let provider = new ToolchainProvider();
         provider.getChildren(undefined).then((bnodes) => {
-          assert.strictEqual(bnodes.length, 2);
+          assert.strictEqual(bnodes.length, 3);
           assert.strictEqual(bnodes[0].label, oneBackendName);
-          assert.strictEqual(bnodes[1].label, backendName);
+          assert.strictEqual(bnodes[1].label, edgeTPUBackendName);
+          assert.strictEqual(bnodes[2].label, backendName);
           done();
         });
       });
       test("gets Children with BackendNode", function (done) {
         let provider = new ToolchainProvider();
         let bnodes: BackendNode[] = NodeBuilder.createBackendNodes();
-        assert.strictEqual(bnodes.length, 2);
+        assert.strictEqual(bnodes.length, 3);
         assert.strictEqual(bnodes[0].label, oneBackendName);
-        assert.strictEqual(bnodes[1].label, backendName);
-        // Ignore bnodes[0] because it is ONE Toolchain backend.
-        let bnode: BackendNode = bnodes[1];
+        assert.strictEqual(bnodes[1].label, edgeTPUBackendName);
+        assert.strictEqual(bnodes[2].label, backendName);
+        // Ignore bnodes[0], bnodes[1] because these are ONE Toolchain backend and EdgeTPU Toolchain backend.
+        let bnode: BackendNode = bnodes[2];
         provider.getChildren(bnode).then((tnodes) => {
           assert.strictEqual(tnodes.length, 1);
           tnodes.forEach((tnode) => {
@@ -257,11 +261,12 @@ suite("Toolchain", function () {
       test("requests uninstall", function () {
         const provider = new ToolchainProvider();
         const bnodes = NodeBuilder.createBackendNodes();
-        assert.strictEqual(bnodes.length, 2);
+        assert.strictEqual(bnodes.length, 3);
         assert.strictEqual(bnodes[0].label, oneBackendName);
-        assert.strictEqual(bnodes[1].label, backendName);
-        // Ignore bnodes[0] because it is ONE Toolchain backend.
-        const tnodes = NodeBuilder.createToolchainNodes(bnodes[1]);
+        assert.strictEqual(bnodes[1].label, edgeTPUBackendName);
+        assert.strictEqual(bnodes[2].label, backendName);
+        // Ignore bnodes[0], bnodes[1] because these are ONE Toolchain backend and EdgeTPU Toolchain backend.
+        const tnodes = NodeBuilder.createToolchainNodes(bnodes[2]);
         assert.isAbove(tnodes.length, 0);
         provider.uninstall(tnodes[0]);
         assert.isTrue(true);
@@ -338,11 +343,12 @@ suite("Toolchain", function () {
       test("request setDefaultToolchain", function () {
         const provider = new ToolchainProvider();
         const bnodes = NodeBuilder.createBackendNodes();
-        assert.strictEqual(bnodes.length, 2);
+        assert.strictEqual(bnodes.length, 3);
         assert.strictEqual(bnodes[0].label, oneBackendName);
-        assert.strictEqual(bnodes[1].label, backendName);
-        // Ignore bnodes[0] because it is ONE Toolchain backend.
-        const tnodes = NodeBuilder.createToolchainNodes(bnodes[1]);
+        assert.strictEqual(bnodes[1].label, edgeTPUBackendName);
+        assert.strictEqual(bnodes[2].label, backendName);
+        // Ignore bnodes[0], bnodes[1] because these are ONE Toolchain backend, EdgeTPU Toolchain backend.
+        const tnodes = NodeBuilder.createToolchainNodes(bnodes[2]);
         assert.isAbove(tnodes.length, 0);
         provider.setDefaultToolchain(tnodes[0]);
         assert.isTrue(
