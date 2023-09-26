@@ -16,14 +16,16 @@
 
 import { assert } from "chai";
 
-import { API, globalBackendMap } from "../../Backend/API";
+import { API, BackendMap, globalBackendMap } from "../../Backend/API";
+import { gToolchainEnvMap } from "../../Toolchain/ToolchainEnv";
 import { Backend } from "../../Backend/Backend";
 import { Compiler, CompilerBase } from "../../Backend/Compiler";
 import { Executor, ExecutorBase } from "../../Backend/Executor";
 import { OneToolchain } from "../../Backend/One/OneToolchain";
-import { gToolchainEnvMap } from "../../Toolchain/ToolchainEnv";
+import { EdgeTPUToolchain } from "../../Backend/EdgeTPU/EdgeTPUToolchain";
 
 const oneBackendName = "ONE";
+const edgeTPUBackendName = "EdgeTPU";
 
 // TODO: Move it to Mockup
 const backendName = "Mockup";
@@ -47,38 +49,17 @@ class BackendMockup implements Backend {
   }
 }
 
+const expectedGlobalBackendMap: BackendMap = {};
+expectedGlobalBackendMap[oneBackendName] = new OneToolchain();
+expectedGlobalBackendMap[edgeTPUBackendName] = new EdgeTPUToolchain();
+
 suite("Backend", function () {
-  setup(function () {
-    Object.keys(globalBackendMap).forEach(
-      (key) => delete globalBackendMap[key]
-    );
-    Object.keys(gToolchainEnvMap).forEach(
-      (key) => delete gToolchainEnvMap[key]
-    );
-  });
-
-  teardown(function () {
-    Object.keys(globalBackendMap).forEach(
-      (key) => delete globalBackendMap[key]
-    );
-    Object.keys(gToolchainEnvMap).forEach(
-      (key) => delete gToolchainEnvMap[key]
-    );
-  });
-
   suite("backendAPI", function () {
     test("registers a OneToolchain", function () {
-      let oneBackend = new OneToolchain();
-      API.registerBackend(oneBackend);
-
       const entries = Object.entries(globalBackendMap);
-      assert.strictEqual(entries.length, 1);
+      assert.strictEqual(entries.length, 2);
 
-      // this runs once
-      for (const [key, value] of entries) {
-        assert.strictEqual(key, oneBackendName);
-        assert.deepStrictEqual(value, oneBackend);
-      }
+      assert.deepStrictEqual(globalBackendMap, expectedGlobalBackendMap);
     });
 
     test("registers a backend", function () {
@@ -86,13 +67,15 @@ suite("Backend", function () {
       API.registerBackend(backend);
 
       const entries = Object.entries(globalBackendMap);
-      assert.strictEqual(entries.length, 1);
+      assert.strictEqual(entries.length, 3);
 
-      // this runs once
-      for (const [key, value] of entries) {
-        assert.strictEqual(key, backendName);
-        assert.deepStrictEqual(value, backend);
+      assert.deepStrictEqual(backend, globalBackendMap[backend.name()]);
+
+      if (gToolchainEnvMap[backend.name()] !== undefined) {
+        delete gToolchainEnvMap[backend.name()];
       }
+
+      assert.isUndefined(gToolchainEnvMap[backend.name()]);
     });
   });
 });
