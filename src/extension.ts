@@ -35,6 +35,7 @@ import { VisqViewerProvider } from "./Visquv/VisqViewer";
 import { MPQEditorProvider } from "./MPQEditor/MPQEditor";
 import { MPQSelectionPanel } from "./MPQEditor/MPQCircleSelector";
 import { EdgeTPUToolchain } from "./Backend/EdgeTPU/EdgeTPUToolchain";
+import { EdgeTpuDemo } from "./Demo/EdgeTpuDemo";
 
 /* istanbul ignore next */
 export function activate(context: vscode.ExtensionContext) {
@@ -86,6 +87,8 @@ export function activate(context: vscode.ExtensionContext) {
 
   MPQEditorProvider.register(context);
   MPQSelectionPanel.register(context);
+
+  EdgeTpuDemo.register(context);
 
   API.registerBackend(new OneToolchain());
   API.registerBackend(new EdgeTPUToolchain());

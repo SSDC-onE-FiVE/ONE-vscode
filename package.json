@@ -235,6 +235,12 @@
         "category": "ONE"
       },
       {
+        "command": "one.explorer.runDemo",
+        "title": "Run Demo for onE FiVE",
+        "category": "ONE",
+        "icon": "$(play)"
+      },
+      {
         "command": "one.toolchain.refresh",
         "title": "Toolchain Refresh",
         "category": "ONE",
@@ -426,6 +432,11 @@
         {
           "command": "one.explorer.createCfg",
           "when": "view == OneExplorerView && viewItem =~ /baseModel/",
+          "group": "inline"
+        },
+        {
+          "command": "one.explorer.runDemo",
+          "when": "view == OneExplorerView && viewItem =~ /product.tflite/",
           "group": "inline"
         },
         {
