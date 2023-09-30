@@ -83,4 +83,14 @@ suite("Backend", function () {
       assert.isUndefined(globalBackendMap[backend.name()]);
     });
   });
+
+  teardown(function () {
+    // TODO: provide delete function for backend, which recursively deleting toolchain and executors
+    Object.keys(globalBackendMap).forEach(
+      (key) => delete globalBackendMap[key]
+    );
+    Object.keys(gToolchainEnvMap).forEach(
+      (key) => delete gToolchainEnvMap[key]
+    );
+  });
 });
