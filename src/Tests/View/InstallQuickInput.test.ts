@@ -57,12 +57,6 @@ suite("View", function () {
       gToolchainEnvMap[backendName] = toolchainEnv;
     });
 
-    teardown(function () {
-      if (gToolchainEnvMap[backendName] !== undefined) {
-        delete gToolchainEnvMap[backendName];
-      }
-    });
-
     suite("#constructor()", function () {
       test("is constructed", function () {
         let quickInput = new InstallQuickInput();
@@ -670,10 +664,9 @@ suite("View", function () {
     });
 
     teardown(function () {
-      // TODO: provide delete function for backend, which recursively deleting toolchain and executors
-      Object.keys(gToolchainEnvMap).forEach(
-        (key) => delete gToolchainEnvMap[key]
-      );
+      if (gToolchainEnvMap[backendName] !== undefined) {
+        delete gToolchainEnvMap[backendName];
+      }
     });
   });
 });

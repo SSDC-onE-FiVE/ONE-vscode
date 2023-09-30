@@ -46,12 +46,6 @@ suite("Toolchain", function () {
     gToolchainEnvMap[backendName] = toolchainEnv;
   });
 
-  teardown(function () {
-    if (gToolchainEnvMap[backendName] !== undefined) {
-      delete gToolchainEnvMap[backendName];
-    }
-  });
-
   suite("BaseNode", function () {
     suite("#constructor()", function () {
       test("is constructed with params using base_node", function () {
@@ -376,9 +370,8 @@ suite("Toolchain", function () {
   });
 
   teardown(function () {
-    // TODO: provide delete function for backend, which recursively deleting toolchain and executors
-    Object.keys(gToolchainEnvMap).forEach(
-      (key) => delete gToolchainEnvMap[key]
-    );
+    if (gToolchainEnvMap[backendName] !== undefined) {
+      delete gToolchainEnvMap[backendName];
+    }
   });
 });
