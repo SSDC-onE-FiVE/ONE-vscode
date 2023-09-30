@@ -5,30 +5,42 @@ export class EdgeTpuDemoPanel {
   private readonly _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
 
-  private constructor(panel: vscode.WebviewPanel,context : vscode.ExtensionContext) {
+  private constructor(
+    panel: vscode.WebviewPanel,
+    context: vscode.ExtensionContext
+  ) {
     this._panel = panel;
     this._panel.onDidDispose(this.dispose, null, this._disposables);
     this._panel.webview.html = this._getWebviewContent();
-    this._panel.webview.onDidReceiveMessage(message=>{
-      switch(message.command){
-        case "run":
-          //TODO : Receives input and output file paths from the user for EdgeTPU Model inference and executes it.
-          console.log(message.text)
-          break;
-      }
-    },undefined,context.subscriptions);
+    this._panel.webview.onDidReceiveMessage(
+      (message) => {
+        switch (message.command) {
+          case "run":
+            //TODO : Receives input and output file paths from the user for EdgeTPU Model inference and executes it.
+            console.log(message.text);
+            break;
+        }
+      },
+      undefined,
+      context.subscriptions
+    );
   }
 
   //TODO : Display the existing panel if it exists, or create a new one if it doesn't and then display it.
-  public static render(context : vscode.ExtensionContext) {
+  public static render(context: vscode.ExtensionContext) {
     if (EdgeTpuDemoPanel.currentPanel) {
       EdgeTpuDemoPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
     } else {
-      const panel = vscode.window.createWebviewPanel("EdgeTPU", "EdgeTPU", vscode.ViewColumn.One,{
-        enableScripts: true
-      });
+      const panel = vscode.window.createWebviewPanel(
+        "EdgeTPU",
+        "EdgeTPU",
+        vscode.ViewColumn.One,
+        {
+          enableScripts: true,
+        }
+      );
 
-      EdgeTpuDemoPanel.currentPanel = new EdgeTpuDemoPanel(panel,context);
+      EdgeTpuDemoPanel.currentPanel = new EdgeTpuDemoPanel(panel, context);
     }
   }
 
@@ -82,6 +94,6 @@ export class EdgeTpuDemoPanel {
         <button id="btn-run">실행하기</button>
       </body>
     </html>
-  `;}
-
+  `;
+  }
 }
