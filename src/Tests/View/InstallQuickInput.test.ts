@@ -57,12 +57,6 @@ suite("View", function () {
       gToolchainEnvMap[backendName] = toolchainEnv;
     });
 
-    teardown(function () {
-      if (gToolchainEnvMap[backendName] !== undefined) {
-        delete gToolchainEnvMap[backendName];
-      }
-    });
-
     suite("#constructor()", function () {
       test("is constructed", function () {
         let quickInput = new InstallQuickInput();
@@ -667,6 +661,12 @@ suite("View", function () {
           quickInput.getMultiSteps(invalidState);
         }).to.throw(`state is wrong: ` + String(invalidState.current));
       });
+    });
+
+    teardown(function () {
+      if (gToolchainEnvMap[backendName] !== undefined) {
+        delete gToolchainEnvMap[backendName];
+      }
     });
   });
 });

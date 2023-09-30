@@ -46,12 +46,6 @@ suite("Toolchain", function () {
     gToolchainEnvMap[backendName] = toolchainEnv;
   });
 
-  teardown(function () {
-    if (gToolchainEnvMap[backendName] !== undefined) {
-      delete gToolchainEnvMap[backendName];
-    }
-  });
-
   suite("BaseNode", function () {
     suite("#constructor()", function () {
       test("is constructed with params using base_node", function () {
@@ -373,5 +367,11 @@ suite("Toolchain", function () {
         assert.isFalse(ret);
       });
     });
+  });
+
+  teardown(function () {
+    if (gToolchainEnvMap[backendName] !== undefined) {
+      delete gToolchainEnvMap[backendName];
+    }
   });
 });
