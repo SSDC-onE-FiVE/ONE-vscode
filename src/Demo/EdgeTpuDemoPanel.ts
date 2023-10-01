@@ -7,7 +7,8 @@ export class EdgeTpuDemoPanel {
 
   private constructor(
     panel: vscode.WebviewPanel,
-    context: vscode.ExtensionContext
+    context: vscode.ExtensionContext,
+    model: string
   ) {
     this._panel = panel;
     this._panel.onDidDispose(this.dispose, null, this._disposables);
@@ -17,7 +18,12 @@ export class EdgeTpuDemoPanel {
         switch (message.command) {
           case "run":
             //TODO : Receives input and output file paths from the user for EdgeTPU Model inference and executes it.
-            console.log(message.text);
+            vscode.commands.executeCommand(
+              "one.explorer.runDemoBash",
+              message.text.inputPath,
+              message.text.outputPath,
+              model
+            );
             break;
         }
       },
@@ -27,7 +33,7 @@ export class EdgeTpuDemoPanel {
   }
 
   //TODO : Display the existing panel if it exists, or create a new one if it doesn't and then display it.
-  public static render(context: vscode.ExtensionContext) {
+  public static render(context: vscode.ExtensionContext, model: string) {
     if (EdgeTpuDemoPanel.currentPanel) {
       EdgeTpuDemoPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
     } else {
@@ -40,7 +46,11 @@ export class EdgeTpuDemoPanel {
         }
       );
 
-      EdgeTpuDemoPanel.currentPanel = new EdgeTpuDemoPanel(panel, context);
+      EdgeTpuDemoPanel.currentPanel = new EdgeTpuDemoPanel(
+        panel,
+        context,
+        model
+      );
     }
   }
 
