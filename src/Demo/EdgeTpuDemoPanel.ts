@@ -99,8 +99,8 @@ export class EdgeTpuDemoPanel {
         </script>
       </head>
       <body class="App">
-        <div>Input경로 : <input id="input-path" value="기본 인풋값" /><div>
-        <div>Output경로 : <input id="output-path" value="기본 아웃풋값" /></div>
+        <div>Input경로 : <input id="input-path" value="owl.jpg" /><div>
+        <div>Output경로 : <input id="output-path" value="output.jpg" /></div>
         <button id="btn-run">실행하기</button>
       </body>
     </html>

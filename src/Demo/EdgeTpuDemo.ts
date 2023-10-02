@@ -1,5 +1,7 @@
+import * as os from "os";
 import * as fs from "fs";
 import * as cp from "child_process";
+import * as path from "path";
 import * as vscode from "vscode";
 
 import { Node } from "../OneExplorer/OneExplorer";
@@ -29,26 +31,34 @@ export class EdgeTpuDemo {
     console.log("rundemobash", inputPath, outputPath, model);
     console.log(fs.existsSync(model));
 
+    path.isAbsolute(inputPath) || (inputPath = `${os.homedir()}/${inputPath}`);
+    path.isAbsolute(outputPath) ||
+      (outputPath = `${os.homedir()}/${outputPath}`);
+
     const extensionId = "Samsung.one-vscode";
     const ext = vscode.extensions.getExtension(
       extensionId
     ) as vscode.Extension<any>;
-    const scriptPath = vscode.Uri.joinPath(
+    const bashPath = vscode.Uri.joinPath(
       ext!.extensionUri,
-      "script",
+      "script/demo",
       "runDemo.sh"
     ).fsPath;
-    console.log(scriptPath);
+    const scriptPath = vscode.Uri.joinPath(
+      ext!.extensionUri,
+      "script/demo",
+      "semantic_segmentation.py"
+    ).fsPath;
 
-    const stdout = cp.execSync(
-      `bash ${scriptPath} "${model}" "${inputPath}" "${outputPath}"`
-    );
-    console.log(`stdout: ${stdout}`);
+    const cmd = `bash ${bashPath} "${scriptPath}" "${model}" "${inputPath}" "${outputPath}"`;
+    console.log(cmd);
+    try {
+      const stdout = cp.execSync(cmd);
+      console.log(`stdout: ${stdout}`);
+    } catch (error) {
+      console.error(error);
+    }
 
-    // const path = "${HOME}/demo/segmentation_result.jpg";
-    // const rpath = vscode.Uri.parse(path).fsPath;
-    // const rpath = fs.realpathSync(path);
-    // console.log(rpath);
-    // console.log(fs.existsSync(rpath));
+    // TODO: print output(outputPath) to webview...
   }
 }
