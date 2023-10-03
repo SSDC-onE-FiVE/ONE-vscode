@@ -53,8 +53,8 @@ export class EdgeTpuDemo {
     const cmd = `bash ${bashPath} "${scriptPath}" "${model}" "${inputPath}" "${outputPath}"`;
     console.log(cmd);
     try {
-      const stdout = cp.execSync(cmd);
-      console.log(`stdout: ${stdout}`);
+      // const stdout = cp.execSync(cmd);
+      // console.log(`stdout: ${stdout}`);
     } catch (error) {
       console.error(error);
     }
