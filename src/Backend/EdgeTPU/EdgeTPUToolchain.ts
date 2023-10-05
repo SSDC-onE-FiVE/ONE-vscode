@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
+import { Backend } from "../Backend";
 import { Command } from "../Command";
+import { Compiler } from "../Compiler";
+import { Executor } from "../Executor";
 import { DebianToolchain } from "../ToolchainImpl/DebianToolchain";
 
 import * as ini from "ini";
@@ -77,4 +80,30 @@ class EdgeTPUDebianToolchain extends DebianToolchain {
   }
 }
 
-export { EdgeTPUDebianToolchain };
+class EdgeTPUToolchain implements Backend {
+  private readonly backendName: string;
+  private readonly toolchainCompiler: Compiler | undefined;
+
+  constructor() {
+    this.backendName = "EdgeTPU";
+    this.toolchainCompiler = undefined;
+  }
+
+  name(): string {
+    return this.backendName;
+  }
+
+  compiler(): Compiler | undefined {
+    return this.toolchainCompiler;
+  }
+
+  executor(): Executor | undefined {
+    return undefined;
+  }
+
+  executors(): Executor[] {
+    return [];
+  }
+}
+
+export { EdgeTPUDebianToolchain, EdgeTPUToolchain };
